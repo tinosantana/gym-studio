@@ -268,7 +268,20 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
   margin:0 24px 4px 0;
 }
 .modal-target{color:var(--text-mute);font-size:12px;font-family:'JetBrains Mono',monospace;margin:0 0 12px;}
-.modal-icon{background:var(--panel-2);border-radius:8px;padding:8px;margin-bottom:14px;}
+.modal-icon{background:var(--panel-2);border-radius:8px;padding:8px;margin-bottom:14px;overflow:hidden;}
+.modal-icon svg{animation:modalIconMove 1.6s ease-in-out infinite alternate;transform-origin:50% 60%;}
+@keyframes modalIconMove{
+  from{transform:translateY(0) scale(1);}
+  to{transform:translateY(-6px) scale(1.035);}
+}
+.source-link{
+  display:block;width:100%;box-sizing:border-box;
+  background:var(--panel-2);border:1px solid var(--brass-dim);border-radius:8px;
+  padding:10px 12px;text-decoration:none;color:var(--text);
+}
+.source-link:hover{border-color:var(--brass);}
+.source-link .sl-label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.4px;font-size:13px;color:var(--brass);}
+.source-link .sl-sub{display:block;font-size:11.5px;color:var(--text-mute);margin-top:2px;}
 .modal-section{margin-bottom:14px;}
 .modal-section p{margin:0 0 6px;}
 .modal-section ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--text);}
@@ -435,7 +448,7 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
       <p class="section-title" style="font-size:13px;margin-bottom:6px;">Errores comunes</p>
       <ul id="modal-mistakes" class="mistakes"></ul>
     </div>
-    <button class="btn btn-primary" id="modal-video" style="width:100%;">Buscar vídeo de referencia ↗</button>
+    <div id="modal-source"></div>
   </div>
 </div>
 
@@ -479,7 +492,8 @@ const PLAN_SCHEMA_EXAMPLE = {
       label: 'Lunes',
       focus: 'descripción corta del día',
       exercises: [
-        { id: 'a1', name: 'Sentadilla', sets: 3, reps: '8', rest: 120, pattern: 'squat' }
+        { id: 'a1', name: 'Sentadilla', sets: 3, reps: '8', rest: 120, pattern: 'squat',
+          source: { url: 'https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/', label: 'ACE Fitness — Back Squat' } }
       ]
     }
   ]
@@ -496,7 +510,8 @@ Reglas:
 - "rest" es el descanso en segundos (número).
 - "pattern" debe ser uno de: ${PATTERN_VALUES.join(', ')}. Elige el que mejor describa el movimiento; si ninguno encaja, usa "isolation".
 - Cada "id" de ejercicio y de día debe ser único dentro del plan.
-- Incluye todos los días y ejercicios del PDF, en el mismo orden.`;
+- Incluye todos los días y ejercicios del PDF, en el mismo orden.
+- Para cada ejercicio, busca en la web una fuente seria y verificable que explique la técnica correcta (biblioteca de ejercicios de ACE Fitness, NASM, Physitrack, u otra fuente profesional equivalente) y añade "source": {"url": "...", "label": "..."}. Antes de incluir una URL, comprueba que la página existe de verdad (ábrela o búscala); si no encuentras una fuente fiable para un ejercicio concreto, omite el campo "source" en ese ejercicio en vez de inventar un enlace.`;
 
 /* ---------- Perfiles ---------- */
 const PROFILES_KEY = 'gymstudio:profiles';
@@ -1069,9 +1084,15 @@ function openExerciseModal(exId){
   document.getElementById('modal-icon').innerHTML = PATTERN_ICONS[ex.pattern] || PATTERN_ICONS.isolation;
   document.getElementById('modal-steps').innerHTML = info.steps.map(s=>`<li>${s}</li>`).join('');
   document.getElementById('modal-mistakes').innerHTML = info.mistakes.map(s=>`<li>${s}</li>`).join('') || '<li>Sin datos todavía.</li>';
-  document.getElementById('modal-video').onclick = ()=>{
-    window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' técnica correcta'), '_blank');
-  };
+  const sourceEl = document.getElementById('modal-source');
+  if(ex.source && ex.source.url){
+    sourceEl.innerHTML = `<a class="source-link" href="${ex.source.url}" target="_blank" rel="noopener"><span class="sl-label">Ver guía y vídeo &#8599;</span><span class="sl-sub">${ex.source.label||'Fuente verificada'}</span></a>`;
+  } else {
+    sourceEl.innerHTML = `<button type="button" class="btn btn-primary" id="modal-video" style="width:100%;">Buscar vídeo de referencia &#8599;</button>`;
+    document.getElementById('modal-video').onclick = ()=>{
+      window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' técnica correcta'), '_blank');
+    };
+  }
   document.getElementById('modal-overlay').classList.add('open');
 }
 
