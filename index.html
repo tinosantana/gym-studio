@@ -89,6 +89,9 @@ body{
 section{display:none;}
 section.active{display:block;}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;}
+.plan-picker{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.plan-picker label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.4px;font-size:12px;color:var(--text-mute);flex:none;}
+.plan-picker select{flex:1;min-width:0;background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:10px 12px;font-family:'Inter',sans-serif;font-size:14px;}
 .day-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;}
 .day-btn{
   flex:1;
@@ -347,12 +350,15 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
 
   <div class="tabs">
     <button class="tab-btn active" data-view="plan">Plan</button>
-    <button class="tab-btn" data-view="import">Plan nuevo</button>
     <button class="tab-btn" data-view="data">Datos</button>
   </div>
 
   <section id="view-plan" class="active">
     <div class="card">
+      <div class="plan-picker">
+        <label for="plan-select">Entrenamientos</label>
+        <select id="plan-select"></select>
+      </div>
       <div class="day-row" id="day-row"></div>
       <div class="day-focus" id="day-focus"></div>
       <p class="day-status" id="day-status"></p>
@@ -368,30 +374,6 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
     </div>
   </section>
 
-  <section id="view-import">
-    <div class="card">
-      <p class="section-title">Cómo subir un plan nuevo</p>
-      <p class="muted">1. Copia estas instrucciones. 2. Pégaselas a Claude en el chat junto con el PDF de tu nuevo plan. 3. Pega aquí abajo el JSON que te devuelva.</p>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="copy-prompt">Copiar instrucciones para Claude</button>
-        <span class="msg" id="copy-prompt-msg"></span>
-      </div>
-      <details style="margin-top:12px;">
-        <summary class="muted" style="cursor:pointer;">Ver el formato exacto</summary>
-        <div class="schema-box" id="schema-box"></div>
-      </details>
-    </div>
-    <div class="card">
-      <p class="section-title">Pegar el plan (JSON)</p>
-      <textarea id="import-json-box" placeholder="Pega aquí el JSON que te haya dado Claude..."></textarea>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="load-json-plan">Cargar este plan</button>
-        <label class="btn" style="cursor:pointer;">O sube un archivo .json<input type="file" id="import-json-file" accept="application/json" style="display:none;"></label>
-      </div>
-      <p class="msg" id="import-msg"></p>
-      <div id="plan-preview" class="plan-preview" style="margin-top:10px;"></div>
-    </div>
-  </section>
 
   <section id="view-data">
     <div class="card">
@@ -406,7 +388,7 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
     </div>
     <div class="card">
       <p class="section-title">Copia de seguridad</p>
-      <p class="muted">Los datos se guardan solo en este navegador, para los dos perfiles. Descarga una copia de vez en cuando por si cambias de móvil o borras datos de navegación.</p>
+      <p class="muted">Los planes viven en la propia web y se ven en cualquier dispositivo. Lo que se guarda solo en este navegador es vuestro historial de sesiones y pesos. Descarga una copia de vez en cuando por si cambias de móvil o borras datos de navegación.</p>
       <div class="btn-row">
         <button class="btn" id="export-backup">Descargar copia de seguridad</button>
         <label class="btn" style="cursor:pointer;">Restaurar copia<input type="file" id="import-backup" accept="application/json" style="display:none;"></label>
@@ -453,8 +435,7 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
 </div>
 
 <script>
-/* ---------- Plan por defecto (demo, hasta que importéis el vuestro) ---------- */
-const DEFAULT_PLAN = {
+const PLAN_DEMO = {
   label: 'Plan demo · sustitúyelo por el vuestro en "Plan nuevo"',
   goals: ['Full body 3 días', 'Técnica antes que peso', 'Progresión semanal suave'],
   cardioNote: '',
@@ -481,19 +462,344 @@ const DEFAULT_PLAN = {
   ]
 };
 
-const PLAN_SCHEMA_EXAMPLE = {
-  label: 'Nombre de la fase (ej. "Semanas 1-4 · fuerza base")',
-  goals: ['objetivo 1', 'objetivo 2'],
-  cardioNote: 'texto opcional, o cadena vacía',
-  progressionNote: 'texto opcional sobre cómo subir peso',
-  days: [
+const PLAN_CRIS_V1_2 = {
+  "label": "Fuerza · glúteos · core · progresión a dominadas (v1.2, 08/09/2026)",
+  "goals": [
+    "Ganar fuerza y masa en glúteos y piernas (3 exposiciones semanales)",
+    "Mejorar estabilidad de core: anti-extensión, antirrotación y estabilidad lateral",
+    "Progresar desde cero hasta la primera dominada estricta",
+    "Aprender bien los patrones de sentadilla, bisagra de cadera, empuje y tracción",
+    "Mantener peso y composición corporal — no es un plan de pérdida de peso"
+  ],
+  "cardioNote": "No se incluye cardio adicional como herramienta de pérdida de peso; el objetivo es rendimiento, no bajar de peso.",
+  "progressionNote": "Doble progresión: primero sube repeticiones dentro del rango indicado; cuando completes el rango alto en todas las series con buena técnica, sube ligeramente el peso y vuelve a la parte baja del rango. Respeta el RIR (repeticiones en reserva) de cada ejercicio — no busques el fallo. En dominada asistida la progresión es reducir la asistencia de la banda solo cuando 4×4-6 salga sólido, no por calendario. Calidad antes que carga: si la técnica se deteriora, no se avanza. Señales de suelo pélvico a vigilar en cualquier sesión: aumento del abombamiento, sensación de peso o presión, pérdida de orina durante o después de entrenar, o dolor pélvico/perineal — si aparecen, reduce esa sesión y coméntalo; no fuerces la progresión.",
+  "days": [
     {
-      id: 'A',
-      label: 'Lunes',
-      focus: 'descripción corta del día',
-      exercises: [
-        { id: 'a1', name: 'Sentadilla', sets: 3, reps: '8', rest: 120, pattern: 'squat',
-          source: { url: 'https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/', label: 'ACE Fitness — Back Squat' } }
+      "id": "lunes",
+      "label": "Lunes",
+      "focus": "Glúteos + piernas + core. Calentamiento 6-8 min antes de empezar. RIR objetivo 2-3.",
+      "exercises": [
+        {
+          "id": "lu1",
+          "name": "Hip thrust con barra",
+          "sets": 4,
+          "reps": "8-10",
+          "rest": 105,
+          "pattern": "bridge",
+          "source": {
+            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
+            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
+          }
+        },
+        {
+          "id": "lu2",
+          "name": "Sentadilla con barra",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": 90,
+          "pattern": "squat",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/",
+            "label": "ACE Fitness — Exercise Library: Back Squat"
+          }
+        },
+        {
+          "id": "lu3",
+          "name": "Peso muerto rumano",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": 90,
+          "pattern": "hinge",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
+            "label": "NASM — Romanian Deadlift (Barbell)"
+          }
+        },
+        {
+          "id": "lu4",
+          "name": "Abducción con banda",
+          "sets": 3,
+          "reps": "15-20",
+          "rest": 45,
+          "pattern": "isolation",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/155/standing-hip-abduction/",
+            "label": "ACE Fitness — Exercise Library: Standing Hip Abduction"
+          }
+        },
+        {
+          "id": "lu5",
+          "name": "Dead bug",
+          "sets": 3,
+          "reps": "6-8 por lado",
+          "rest": 38,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
+            "label": "NASM — Dead Bug"
+          }
+        }
+      ]
+    },
+    {
+      "id": "martes",
+      "label": "Martes",
+      "focus": "Espalda + dominadas + core. Calentamiento específico de hombro 6-8 min. Cierra con 3-5 min de respiración/coordinación pélvica, sin dolor ni presión. Prioridad: técnica de dominada sin acumular intentos fallidos.",
+      "exercises": [
+        {
+          "id": "ma1",
+          "name": "Dominada asistida",
+          "sets": 4,
+          "reps": "4-6",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
+            "label": "NASM — Band Assisted Pull-Up"
+          }
+        },
+        {
+          "id": "ma2",
+          "name": "Remo con barra",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/",
+            "label": "ACE Fitness — Exercise Library: Bent-Over Row"
+          }
+        },
+        {
+          "id": "ma3",
+          "name": "Negativa de dominada",
+          "sets": 3,
+          "reps": "2-3",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.acefitness.org/resources/pros/expert-articles/5565/4-moves-to-help-you-master-the-pull-up/",
+            "label": "ACE Fitness — 4 Moves to Help You Master the Pull-Up"
+          }
+        },
+        {
+          "id": "ma4",
+          "name": "Remo unilateral",
+          "sets": 3,
+          "reps": "10 por lado",
+          "rest": 60,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/126/single-arm-row/",
+            "label": "ACE Fitness — Exercise Library: Single Arm Row"
+          }
+        },
+        {
+          "id": "ma5",
+          "name": "Face pull con banda",
+          "sets": 3,
+          "reps": "12-15",
+          "rest": 45,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/face-pull",
+            "label": "NASM — Face Pull"
+          }
+        },
+        {
+          "id": "ma6",
+          "name": "Pallof press",
+          "sets": 3,
+          "reps": "8-10 por lado",
+          "rest": 38,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.physitrack.com/exercise-library/how-to-perform-the-pallof-press-exercise",
+            "label": "Physitrack — Pallof Press (guía de fisioterapia)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "jueves",
+      "label": "Jueves",
+      "focus": "Glúteos + piernas. Calentamiento 6-8 min. Segunda sesión de tren inferior de la semana — volumen suficiente, sin llevar cada serie al esfuerzo máximo.",
+      "exercises": [
+        {
+          "id": "ju1",
+          "name": "Hip thrust con barra",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": 90,
+          "pattern": "bridge",
+          "source": {
+            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
+            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
+          }
+        },
+        {
+          "id": "ju2",
+          "name": "Sentadilla búlgara",
+          "sets": 3,
+          "reps": "8-10 por lado",
+          "rest": 83,
+          "pattern": "lunge",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/bulgarian-split-squat",
+            "label": "NASM — Bulgarian Split Squat"
+          }
+        },
+        {
+          "id": "ju3",
+          "name": "Peso muerto rumano con mancuernas",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": 83,
+          "pattern": "hinge",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/dumbbell-romanian-deadlift",
+            "label": "NASM — Dumbbell Romanian Deadlift"
+          }
+        },
+        {
+          "id": "ju4",
+          "name": "Step-up",
+          "sets": 3,
+          "reps": "8-10 por lado",
+          "rest": 68,
+          "pattern": "lunge",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/28/step-up/",
+            "label": "ACE Fitness — Exercise Library: Step-Up"
+          }
+        },
+        {
+          "id": "ju5",
+          "name": "Abducción con banda",
+          "sets": 3,
+          "reps": "15-20",
+          "rest": 45,
+          "pattern": "isolation",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/155/standing-hip-abduction/",
+            "label": "ACE Fitness — Exercise Library: Standing Hip Abduction"
+          }
+        },
+        {
+          "id": "ju6",
+          "name": "Side plank",
+          "sets": 3,
+          "reps": "20-30 seg por lado",
+          "rest": 38,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/side-plank",
+            "label": "NASM — Side Plank"
+          }
+        },
+        {
+          "id": "ju7",
+          "name": "Bird dog",
+          "sets": 2,
+          "reps": "8 por lado",
+          "rest": 30,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/bird-dog",
+            "label": "NASM — Bird Dog"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sabado",
+      "label": "Sábado",
+      "focus": "Dominadas + tren superior + exposición extra de glúteo/core.",
+      "exercises": [
+        {
+          "id": "sa1",
+          "name": "Dominada asistida",
+          "sets": 4,
+          "reps": "4-6",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
+            "label": "NASM — Band Assisted Pull-Up"
+          }
+        },
+        {
+          "id": "sa2",
+          "name": "Remo con barra",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/",
+            "label": "ACE Fitness — Exercise Library: Bent-Over Row"
+          }
+        },
+        {
+          "id": "sa3",
+          "name": "Press de banca con mancuernas",
+          "sets": 3,
+          "reps": "8-12",
+          "rest": 83,
+          "pattern": "press",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/19/chest-press/",
+            "label": "ACE Fitness — Exercise Library: Dumbbell Chest Press"
+          }
+        },
+        {
+          "id": "sa4",
+          "name": "Hip thrust con barra",
+          "sets": 3,
+          "reps": "12-15",
+          "rest": 83,
+          "pattern": "bridge",
+          "source": {
+            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
+            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
+          }
+        },
+        {
+          "id": "sa5",
+          "name": "Elevaciones laterales",
+          "sets": 2,
+          "reps": "12-15",
+          "rest": 45,
+          "pattern": "isolation",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/26/lateral-raise/",
+            "label": "ACE Fitness — Exercise Library: Lateral Raise"
+          }
+        },
+        {
+          "id": "sa6",
+          "name": "Dead bug",
+          "sets": 3,
+          "reps": "6-8 por lado",
+          "rest": 38,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
+            "label": "NASM — Dead Bug"
+          }
+        },
+        {
+          "id": "sa7",
+          "name": "Pallof press",
+          "sets": 2,
+          "reps": "10 por lado",
+          "rest": 38,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.physitrack.com/exercise-library/how-to-perform-the-pallof-press-exercise",
+            "label": "Physitrack — Pallof Press (guía de fisioterapia)"
+          }
+        }
       ]
     }
   ]
@@ -501,34 +807,29 @@ const PLAN_SCHEMA_EXAMPLE = {
 
 const PATTERN_VALUES = ['press','pull','squat','lunge','hinge','bridge','plank','isolation','backext','legraise'];
 
-const CLAUDE_PROMPT = `Convierte el plan de entrenamiento de este PDF en un JSON con EXACTAMENTE este formato (nada de texto antes o después, solo el JSON):
-
-${JSON.stringify(PLAN_SCHEMA_EXAMPLE, null, 2)}
-
-Reglas:
-- "sets" es un número. "reps" puede ser texto (ej. "8-10", "al fallo", "30 seg").
-- "rest" es el descanso en segundos (número).
-- "pattern" debe ser uno de: ${PATTERN_VALUES.join(', ')}. Elige el que mejor describa el movimiento; si ninguno encaja, usa "isolation".
-- Cada "id" de ejercicio y de día debe ser único dentro del plan.
-- Incluye todos los días y ejercicios del PDF, en el mismo orden.
-- Para cada ejercicio, busca en la web una fuente seria y verificable que explique la técnica correcta (biblioteca de ejercicios de ACE Fitness, NASM, Physitrack, u otra fuente profesional equivalente) y añade "source": {"url": "...", "label": "..."}. Antes de incluir una URL, comprueba que la página existe de verdad (ábrela o búscala); si no encuentras una fuente fiable para un ejercicio concreto, omite el campo "source" en ese ejercicio en vez de inventar un enlace.`;
+/* Los planes viven dentro del código: cualquier dispositivo que abra la web los ve.
+   Para añadir un plan nuevo a un perfil, se añade una entrada a su lista. */
+const PLANS = {
+  p1: [ { id:'demo', name:'Plan 1 · Demo', plan: PLAN_DEMO } ],
+  p2: [ { id:'cris-v1-2', name:'Plan 1 · Fuerza, glúteos y dominadas (v1.2)', plan: PLAN_CRIS_V1_2 } ]
+};
 
 /* ---------- Perfiles ---------- */
-const PROFILES_KEY = 'gymstudio:profiles';
 const ACTIVE_KEY = 'gymstudio:active';
-const DEFAULT_PROFILES = [
+const PROFILES = [
   { id:'p1', name:'Tino' },
   { id:'p2', name:'Cris' }
 ];
 
-let profiles = [];
+let profiles = PROFILES;
 let activeProfileId = null;
+let activePlanId = null;
 let plan = null;
 let history = [];
 let currentDay = null;
 
-function planKey(id){ return `gymstudio:${id}:plan`; }
-function historyKey(id){ return `gymstudio:${id}:history`; }
+function activePlanKey(pid){ return `gymstudio:${pid}:activePlan`; }
+function historyKey(pid, planId){ return `gymstudio:${pid}:${planId}:history`; }
 
 function todayStr(){
   return new Date().toISOString().slice(0,10);
@@ -564,17 +865,8 @@ function renderDayStatus(){
 }
 
 function loadProfiles(){
-  try{
-    const raw = localStorage.getItem(PROFILES_KEY);
-    profiles = raw ? JSON.parse(raw) : DEFAULT_PROFILES;
-    if(!Array.isArray(profiles) || profiles.length === 0) profiles = DEFAULT_PROFILES;
-  }catch(e){ profiles = DEFAULT_PROFILES; }
   activeProfileId = localStorage.getItem(ACTIVE_KEY) || profiles[0].id;
   if(!profiles.find(p=>p.id===activeProfileId)) activeProfileId = profiles[0].id;
-}
-
-function saveProfiles(){
-  try{ localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles)); }catch(e){}
 }
 
 function renderProfileRow(){
@@ -596,31 +888,47 @@ function renderProfileRow(){
   });
 }
 
+function renderPlanSelect(){
+  const sel = document.getElementById('plan-select');
+  const list = PLANS[activeProfileId] || [];
+  sel.innerHTML = list.map(p=>`<option value="${p.id}"${p.id===activePlanId?' selected':''}>${p.name}</option>`).join('');
+}
+
 function loadProfileData(){
-  try{
-    const raw = localStorage.getItem(planKey(activeProfileId));
-    plan = raw ? JSON.parse(raw) : DEFAULT_PLAN;
-  }catch(e){ plan = DEFAULT_PLAN; }
-  try{
-    const raw = localStorage.getItem(historyKey(activeProfileId));
-    history = raw ? JSON.parse(raw) : [];
-  }catch(e){ history = []; }
+  const list = PLANS[activeProfileId] || [];
+  let chosen = null;
+  try{ chosen = localStorage.getItem(activePlanKey(activeProfileId)); }catch(e){}
+  const entry = list.find(p=>p.id===chosen) || list[0];
+  if(!entry){
+    plan = { label:'Sin plan', days:[] };
+    activePlanId = null;
+    history = [];
+  } else {
+    activePlanId = entry.id;
+    plan = normalizePlan(JSON.parse(JSON.stringify(entry.plan)));
+    try{
+      const raw = localStorage.getItem(historyKey(activeProfileId, activePlanId));
+      history = raw ? JSON.parse(raw) : [];
+    }catch(e){ history = []; }
+  }
   currentDay = suggestNextDayId();
+  renderPlanSelect();
   renderDayTabs();
   renderExercises();
   renderHistory();
   renderDayStatus();
-  document.getElementById('import-json-box').value = '';
-  document.getElementById('import-msg').textContent = '';
-  document.getElementById('plan-preview').innerHTML = '';
 }
 
-async function savePlan(){
-  try{ localStorage.setItem(planKey(activeProfileId), JSON.stringify(plan)); }catch(e){}
-}
+document.getElementById('plan-select').addEventListener('change', (e)=>{
+  try{ localStorage.setItem(activePlanKey(activeProfileId), e.target.value); }catch(err){}
+  loadProfileData();
+});
+
 async function saveHistory(){
-  try{ localStorage.setItem(historyKey(activeProfileId), JSON.stringify(history)); }catch(e){}
+  if(!activePlanId) return;
+  try{ localStorage.setItem(historyKey(activeProfileId, activePlanId), JSON.stringify(history)); }catch(e){}
 }
+
 
 /* ---------- Vista de plan ---------- */
 function lastWeightFor(exId){
@@ -846,35 +1154,6 @@ document.getElementById('save-session').onclick = async ()=>{
   setTimeout(()=>msg.textContent='', 2500);
 };
 
-/* ---------- Importar plan nuevo ---------- */
-document.getElementById('schema-box').textContent = JSON.stringify(PLAN_SCHEMA_EXAMPLE, null, 2);
-
-document.getElementById('copy-prompt').onclick = async ()=>{
-  const m = document.getElementById('copy-prompt-msg');
-  try{
-    await navigator.clipboard.writeText(CLAUDE_PROMPT);
-    m.textContent = 'Copiado. Pégalo en el chat junto con tu PDF.';
-    m.className = 'msg ok';
-  }catch(e){
-    m.textContent = 'No se pudo copiar automáticamente; usa el texto del recuadro "Ver el formato exacto".';
-    m.className = 'msg err';
-  }
-  setTimeout(()=>{ m.textContent=''; }, 4000);
-};
-
-function validatePlanShape(obj){
-  if(!obj || typeof obj !== 'object') return 'El JSON no es un objeto válido.';
-  if(!Array.isArray(obj.days) || obj.days.length === 0) return 'Falta la lista "days" con al menos un día.';
-  for(const day of obj.days){
-    if(!day.id || !day.label) return 'Cada día necesita "id" y "label".';
-    if(!Array.isArray(day.exercises) || day.exercises.length === 0) return `El día "${day.label}" no tiene ejercicios.`;
-    for(const ex of day.exercises){
-      if(!ex.name) return `Un ejercicio del día "${day.label}" no tiene "name".`;
-    }
-  }
-  return null;
-}
-
 function normalizePlan(obj){
   const usedIds = new Set();
   obj.days.forEach((day, di)=>{
@@ -888,60 +1167,6 @@ function normalizePlan(obj){
   });
   return obj;
 }
-
-function previewPlan(obj){
-  const daysSummary = obj.days.map(d=>`<li><b>${d.label}</b> — ${d.exercises.length} ejercicios</li>`).join('');
-  return `<p><b>${obj.label || 'Plan sin nombre'}</b></p><ul>${daysSummary}</ul>`;
-}
-
-function tryLoadPlanFromText(text){
-  const msg = document.getElementById('import-msg');
-  const preview = document.getElementById('plan-preview');
-  let obj;
-  try{
-    obj = JSON.parse(text);
-  }catch(e){
-    msg.textContent = 'Eso no es un JSON válido. Revisa que hayas pegado el texto completo.';
-    msg.className = 'msg err';
-    preview.innerHTML = '';
-    return;
-  }
-  const error = validatePlanShape(obj);
-  if(error){
-    msg.textContent = error;
-    msg.className = 'msg err';
-    preview.innerHTML = '';
-    return;
-  }
-  obj = normalizePlan(obj);
-  preview.innerHTML = previewPlan(obj) + '<div class="btn-row"><button class="btn btn-primary" id="confirm-load-plan">Usar este plan para ' + profiles.find(p=>p.id===activeProfileId).name + '</button></div>';
-  msg.textContent = 'Plan leído correctamente. Revisa la vista previa y confirma.';
-  msg.className = 'msg ok';
-  document.getElementById('confirm-load-plan').onclick = async ()=>{
-    plan = obj;
-    currentDay = suggestNextDayId();
-    await savePlan();
-    renderDayTabs();
-    renderExercises();
-    renderHistory();
-    renderDayStatus();
-    msg.textContent = 'Plan cargado. Ya puedes verlo en la pestaña "Plan".';
-    preview.innerHTML = '';
-  };
-}
-
-document.getElementById('load-json-plan').onclick = ()=>{
-  tryLoadPlanFromText(document.getElementById('import-json-box').value);
-};
-
-document.getElementById('import-json-file').addEventListener('change', async (e)=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  const text = await file.text();
-  document.getElementById('import-json-box').value = text;
-  tryLoadPlanFromText(text);
-  e.target.value = '';
-});
 
 /* ---------- Resumen para Claude ---------- */
 async function generateSummary(){
@@ -980,15 +1205,13 @@ document.getElementById('copy-summary').onclick = async ()=>{
   }
 };
 
-/* ---------- Copia de seguridad (todos los perfiles) ---------- */
+/* ---------- Copia de seguridad (historial de todos los perfiles) ---------- */
 document.getElementById('export-backup').onclick = ()=>{
-  const data = { profiles, exportedAt: new Date().toISOString(), data: {} };
-  profiles.forEach(p=>{
-    data.data[p.id] = {
-      plan: JSON.parse(localStorage.getItem(planKey(p.id)) || 'null') || DEFAULT_PLAN,
-      history: JSON.parse(localStorage.getItem(historyKey(p.id)) || '[]')
-    };
-  });
+  const data = { app:'gym-studio', version:2, exportedAt:new Date().toISOString(), storage:{} };
+  for(let i=0;i<localStorage.length;i++){
+    const k = localStorage.key(i);
+    if(k && k.startsWith('gymstudio:')) data.storage[k] = localStorage.getItem(k);
+  }
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -1003,17 +1226,12 @@ document.getElementById('import-backup').addEventListener('change', async (e)=>{
   if(!file) return;
   const msg = document.getElementById('backup-msg');
   try{
-    const text = await file.text();
-    const data = JSON.parse(text);
-    if(Array.isArray(data.profiles) && data.data){
-      profiles = data.profiles;
-      saveProfiles();
-      Object.keys(data.data).forEach(pid=>{
-        localStorage.setItem(planKey(pid), JSON.stringify(data.data[pid].plan || DEFAULT_PLAN));
-        localStorage.setItem(historyKey(pid), JSON.stringify(data.data[pid].history || []));
+    const data = JSON.parse(await file.text());
+    if(data && data.app === 'gym-studio' && data.storage){
+      Object.keys(data.storage).forEach(k=>{
+        if(k.startsWith('gymstudio:')) localStorage.setItem(k, data.storage[k]);
       });
-      activeProfileId = profiles[0].id;
-      localStorage.setItem(ACTIVE_KEY, activeProfileId);
+      loadProfiles();
       renderProfileRow();
       loadProfileData();
       msg.textContent = 'Copia restaurada.';
