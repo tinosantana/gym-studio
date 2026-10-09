@@ -435,30 +435,322 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
 </div>
 
 <script>
-const PLAN_DEMO = {
-  label: 'Plan demo · sustitúyelo por el vuestro en "Plan nuevo"',
-  goals: ['Full body 3 días', 'Técnica antes que peso', 'Progresión semanal suave'],
-  cardioNote: '',
-  progressionNote: 'Si completas todas las series con buena técnica, sube un poco el peso la próxima semana.',
-  days: [
-    { id:'A', label:'Día 1', focus:'Full body', exercises:[
-      {id:'a1', name:'Sentadilla', sets:3, reps:'8', rest:120, pattern:'squat'},
-      {id:'a2', name:'Press banca con mancuernas', sets:3, reps:'8', rest:120, pattern:'press'},
-      {id:'a3', name:'Remo con mancuerna', sets:3, reps:'10', rest:90, pattern:'pull'},
-      {id:'a4', name:'Plancha', sets:3, reps:'30-45 seg', rest:45, pattern:'plank'}
-    ]},
-    { id:'B', label:'Día 2', focus:'Full body', exercises:[
-      {id:'b1', name:'Peso muerto rumano', sets:3, reps:'8', rest:120, pattern:'hinge'},
-      {id:'b2', name:'Press militar con mancuernas', sets:3, reps:'10', rest:90, pattern:'press'},
-      {id:'b3', name:'Zancada', sets:3, reps:'10 por pierna', rest:90, pattern:'lunge'},
-      {id:'b4', name:'Curl de bíceps', sets:3, reps:'12', rest:60, pattern:'isolation'}
-    ]},
-    { id:'C', label:'Día 3', focus:'Full body', exercises:[
-      {id:'c1', name:'Puente de glúteo', sets:3, reps:'12', rest:60, pattern:'bridge'},
-      {id:'c2', name:'Press inclinado con mancuernas', sets:3, reps:'10', rest:90, pattern:'press'},
-      {id:'c3', name:'Remo invertido', sets:3, reps:'al máximo sin fallo', rest:90, pattern:'pull'},
-      {id:'c4', name:'Elevación de piernas', sets:3, reps:'12', rest:45, pattern:'legraise'}
-    ]}
+const PLAN_TINO_V2_1 = {
+  "label": "Fuerza, masa muscular y primera dominada (v2.1, 28/09/2026)",
+  "goals": [
+    "Recuperar fuerza general",
+    "Recuperar y aumentar masa muscular",
+    "Conseguir la primera dominada estricta",
+    "Mejorar la capacidad física general (fuerza + caminar + menos sedentarismo)",
+    "Longevidad funcional: piernas, tracción, empuje, bisagra, estabilidad y capacidad aeróbica"
+  ],
+  "cardioNote": "Caminar a intensidad cómoda-moderada: 3×20-30 min en las semanas 1-2, 3-4×25-35 min en las semanas 3-4 y 4×30-40 min en las semanas 5-8, acercándose a ≥150 min/semana si la recuperación lo permite. Los jueves, recuperación activa caminando.",
+  "progressionNote": "Doble progresión: trabaja dentro del rango; cuando todas las series llegan al extremo alto con técnica estable y el RIR previsto, sube ligeramente la carga y vuelve al extremo bajo. Si una repetición necesita balanceo o compensación, no cuenta. RIR por semanas: 1-2 principales RIR 3; 3-4 principales RIR 2-3; 5-7 principales RIR 2; semana 8 evaluación. Sin series al fallo ni 1RM. Descansos autorregulados: principales alrededor de 90 s (añade 30-60 s si la siguiente serie se ve claramente perjudicada), accesorios alrededor de 60 s, core 30-60 s. En dominada asistida baja la banda solo cuando el rango completo sale estable, no por calendario. Si una sesión supera los 60 min, quita primero un accesorio, nunca un principal.",
+  "days": [
+    {
+      "id": "miercoles",
+      "label": "Miércoles",
+      "focus": "Superior A: dominadas + empuje + remo. Haz 2-3 series de aproximación antes del primer ejercicio pesado. Principales RIR 2-3, accesorios RIR 1-2, sin llegar al fallo. En la dominada asistida, el campo kg es la banda usada (10/20/30). Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
+      "exercises": [
+        {
+          "id": "mi1",
+          "name": "Dominada asistida",
+          "sets": 3,
+          "reps": "4-6",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
+            "label": "NASM — Band Assisted Pull-Up"
+          }
+        },
+        {
+          "id": "mi2",
+          "name": "Press banca con barra",
+          "sets": 3,
+          "reps": "6-8",
+          "rest": 90,
+          "pattern": "press"
+        },
+        {
+          "id": "mi3",
+          "name": "Remo con barra",
+          "sets": 3,
+          "reps": "6-8",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/",
+            "label": "ACE Fitness — Exercise Library: Bent-Over Row"
+          }
+        },
+        {
+          "id": "mi4",
+          "name": "Press inclinado con mancuernas",
+          "sets": 2,
+          "reps": "8-12",
+          "rest": 60,
+          "pattern": "press"
+        },
+        {
+          "id": "mi5",
+          "name": "Curl de bíceps",
+          "sets": 2,
+          "reps": "8-12",
+          "rest": 60,
+          "pattern": "isolation"
+        },
+        {
+          "id": "mi6",
+          "name": "Face pull con banda",
+          "sets": 2,
+          "reps": "12-15",
+          "rest": 60,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/face-pull",
+            "label": "NASM — Face Pull"
+          }
+        }
+      ]
+    },
+    {
+      "id": "viernes",
+      "label": "Viernes",
+      "focus": "Inferior A: sentadilla + bisagra + glúteo. Haz 2-3 series de aproximación antes de la sentadilla. Principales RIR 2-3, accesorios RIR 1-2. Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
+      "exercises": [
+        {
+          "id": "vi1",
+          "name": "Sentadilla con barra",
+          "sets": 3,
+          "reps": "5-8",
+          "rest": 90,
+          "pattern": "squat",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/",
+            "label": "ACE Fitness — Exercise Library: Back Squat"
+          }
+        },
+        {
+          "id": "vi2",
+          "name": "Peso muerto rumano",
+          "sets": 3,
+          "reps": "6-8",
+          "rest": 90,
+          "pattern": "hinge",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
+            "label": "NASM — Romanian Deadlift (Barbell)"
+          }
+        },
+        {
+          "id": "vi3",
+          "name": "Hip thrust con barra",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": 90,
+          "pattern": "bridge",
+          "source": {
+            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
+            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
+          }
+        },
+        {
+          "id": "vi4",
+          "name": "Split squat / búlgara",
+          "sets": 2,
+          "reps": "8-10 por lado",
+          "rest": 60,
+          "pattern": "lunge",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/bulgarian-split-squat",
+            "label": "NASM — Bulgarian Split Squat"
+          }
+        },
+        {
+          "id": "vi5",
+          "name": "Elevación de gemelos",
+          "sets": 2,
+          "reps": "10-15",
+          "rest": 60,
+          "pattern": "isolation"
+        },
+        {
+          "id": "vi6",
+          "name": "Dead bug",
+          "sets": 2,
+          "reps": "8 por lado",
+          "rest": 45,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
+            "label": "NASM — Dead Bug"
+          }
+        }
+      ]
+    },
+    {
+      "id": "sabado",
+      "label": "Sábado",
+      "focus": "Superior B: segunda práctica de dominada + volumen superior. Principales RIR 2, accesorios RIR 1-2. En la dominada asistida, el campo kg es la banda usada (10/20/30). Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
+      "exercises": [
+        {
+          "id": "sa1",
+          "name": "Dominada asistida",
+          "sets": 3,
+          "reps": "5-8",
+          "rest": 90,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
+            "label": "NASM — Band Assisted Pull-Up"
+          }
+        },
+        {
+          "id": "sa2",
+          "name": "Press banca / variante",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": 90,
+          "pattern": "press"
+        },
+        {
+          "id": "sa3",
+          "name": "Remo unilateral",
+          "sets": 3,
+          "reps": "8-12 por lado",
+          "rest": 60,
+          "pattern": "pull",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/126/single-arm-row/",
+            "label": "ACE Fitness — Exercise Library: Single Arm Row"
+          }
+        },
+        {
+          "id": "sa4",
+          "name": "Jalón con banda",
+          "sets": 2,
+          "reps": "10-15",
+          "rest": 60,
+          "pattern": "pull"
+        },
+        {
+          "id": "sa5",
+          "name": "Curl de bíceps",
+          "sets": 2,
+          "reps": "10-15",
+          "rest": 60,
+          "pattern": "isolation"
+        },
+        {
+          "id": "sa6",
+          "name": "Extensión de tríceps",
+          "sets": 2,
+          "reps": "10-15",
+          "rest": 60,
+          "pattern": "isolation"
+        },
+        {
+          "id": "sa7",
+          "name": "Pallof press",
+          "sets": 2,
+          "reps": "8-12 por lado",
+          "rest": 45,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.physitrack.com/exercise-library/how-to-perform-the-pallof-press-exercise",
+            "label": "Physitrack — Pallof Press (guía de fisioterapia)"
+          }
+        }
+      ]
+    },
+    {
+      "id": "domingo",
+      "label": "Domingo",
+      "focus": "Inferior B + core: pierna y glúteo con la sentadilla más ligera. Principales RIR 2-3, accesorios RIR 1-2, core con control. Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
+      "exercises": [
+        {
+          "id": "do1",
+          "name": "Sentadilla (variante más ligera)",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": 90,
+          "pattern": "squat",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/",
+            "label": "ACE Fitness — Exercise Library: Back Squat"
+          }
+        },
+        {
+          "id": "do2",
+          "name": "Hip thrust con barra",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": 90,
+          "pattern": "bridge",
+          "source": {
+            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
+            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
+          }
+        },
+        {
+          "id": "do3",
+          "name": "RDL con barra o mancuernas",
+          "sets": 2,
+          "reps": "8-12",
+          "rest": 90,
+          "pattern": "hinge",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
+            "label": "NASM — Romanian Deadlift (Barbell)"
+          }
+        },
+        {
+          "id": "do4",
+          "name": "Step-up / split squat",
+          "sets": 2,
+          "reps": "8-12 por lado",
+          "rest": 60,
+          "pattern": "lunge",
+          "source": {
+            "url": "https://www.acefitness.org/resources/everyone/exercise-library/28/step-up/",
+            "label": "ACE Fitness — Exercise Library: Step-Up"
+          }
+        },
+        {
+          "id": "do5",
+          "name": "Elevación de gemelos",
+          "sets": 2,
+          "reps": "12-15",
+          "rest": 60,
+          "pattern": "isolation"
+        },
+        {
+          "id": "do6",
+          "name": "Plancha lateral",
+          "sets": 2,
+          "reps": "20-40 seg por lado",
+          "rest": 45,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/side-plank",
+            "label": "NASM — Side Plank"
+          }
+        },
+        {
+          "id": "do7",
+          "name": "Bird dog",
+          "sets": 2,
+          "reps": "6-8 por lado",
+          "rest": 45,
+          "pattern": "plank",
+          "source": {
+            "url": "https://www.nasm.org/resource-center/exercise-library/bird-dog",
+            "label": "NASM — Bird Dog"
+          }
+        }
+      ]
+    }
   ]
 };
 
@@ -810,7 +1102,7 @@ const PATTERN_VALUES = ['press','pull','squat','lunge','hinge','bridge','plank',
 /* Los planes viven dentro del código: cualquier dispositivo que abra la web los ve.
    Para añadir un plan nuevo a un perfil, se añade una entrada a su lista. */
 const PLANS = {
-  p1: [ { id:'demo', name:'Plan 1 · Demo', plan: PLAN_DEMO } ],
+  p1: [ { id:'tino-v2-1', name:'Plan 1 · Fuerza, masa y dominadas (v2.1)', plan: PLAN_TINO_V2_1 } ],
   p2: [ { id:'cris-v1-2', name:'Plan 1 · Fuerza, glúteos y dominadas (v1.2)', plan: PLAN_CRIS_V1_2 } ]
 };
 
