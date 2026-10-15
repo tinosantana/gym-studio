@@ -2,352 +2,129 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1B1D1F">
 <title>Gym Studio</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
-:root{
-  --bg:#1B1D1F;
-  --panel:#232629;
-  --panel-2:#2A2E31;
-  --line:#383C3F;
-  --text:#F2F0EB;
-  --text-mute:#9A9FA4;
-  --brass:#E8B94A;
-  --brass-dim:#7A6428;
-  --coral:#FF6B5B;
-  --teal:#4FD1C5;
-  --amber:#F0A93A;
-  --radius:10px;
-}
+:root{--bg:#1B1D1F;--panel:#232629;--panel-2:#2A2E31;--line:#383C3F;--text:#F2F0EB;--text-mute:#9A9FA4;--brass:#E8B94A;--brass-dim:#7A6428;--coral:#FF6B5B;--teal:#4FD1C5;}
 *{box-sizing:border-box;}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Inter',sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-.app{max-width:760px;margin:0 auto;padding:24px 20px 60px;}
-.hero{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  border-bottom:1px solid var(--line);
-  padding-bottom:18px;
-  margin-bottom:16px;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.hero h1{
-  font-family:'Oswald',sans-serif;
-  font-weight:700;
-  font-size:30px;
-  letter-spacing:0.5px;
-  margin:0;
-  text-transform:uppercase;
-}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+.app{max-width:760px;margin:0 auto;padding:max(24px,env(safe-area-inset-top)) 16px 60px;}
+.hero{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:16px;}
+.hero h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:30px;letter-spacing:.5px;margin:0;text-transform:uppercase;}
 .hero h1 span{color:var(--brass);}
 .hero p{margin:4px 0 0;color:var(--text-mute);font-size:13px;}
-
-.profile-row{display:flex;gap:6px;margin-bottom:18px;}
-.profile-btn{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  background:var(--panel-2);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  color:var(--text-mute);
-  font-family:'Oswald',sans-serif;
-  text-transform:uppercase;
-  letter-spacing:0.4px;
-  font-size:13px;
-  padding:10px 8px;
-  cursor:pointer;
-}
-.profile-btn.active{border-color:var(--brass);color:var(--brass);background:rgba(232,185,74,0.08);}
-
-.tabs{display:flex;gap:2px;background:var(--panel-2);border-radius:var(--radius);padding:3px;margin-bottom:20px;}
-.tab-btn{
-  flex:1;
-  border:none;
-  background:transparent;
-  color:var(--text-mute);
-  font-family:'Oswald',sans-serif;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-  font-size:13px;
-  padding:10px 6px;
-  border-radius:7px;
-  cursor:pointer;
-}
+.profile-row{display:flex;gap:6px;margin-bottom:16px;}
+.profile-btn{flex:1;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;color:var(--text-mute);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:14px;padding:11px 8px;cursor:pointer;}
+.profile-btn.active{border-color:var(--brass);color:var(--brass);background:rgba(232,185,74,.08);}
+.tabs{display:flex;gap:2px;background:var(--panel-2);border-radius:10px;padding:3px;margin-bottom:18px;}
+.tab-btn{flex:1;border:none;background:transparent;color:var(--text-mute);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px;font-size:13px;padding:10px 6px;border-radius:7px;cursor:pointer;}
 .tab-btn.active{background:var(--panel);color:var(--brass);}
 section{display:none;}
 section.active{display:block;}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;}
+.section-title{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:15px;margin:0 0 12px;}
+.muted{color:var(--text-mute);font-size:12px;}
+.empty{color:var(--text-mute);font-size:13px;text-align:center;padding:20px 0;}
 .plan-picker{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.plan-picker label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.4px;font-size:12px;color:var(--text-mute);flex:none;}
+.plan-picker label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:12px;color:var(--text-mute);flex:none;}
 .plan-picker select{flex:1;min-width:0;background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:10px 12px;font-family:'Inter',sans-serif;font-size:14px;}
-.day-row{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;padding-bottom:2px;}
-.day-btn{
-  flex:1;
-  min-width:90px;
-  background:var(--panel-2);
-  border:1px solid var(--line);
-  border-radius:8px;
-  color:var(--text-mute);
-  font-family:'Oswald',sans-serif;
-  font-size:12px;
-  letter-spacing:0.3px;
-  text-transform:uppercase;
-  padding:10px 4px;
-  cursor:pointer;
-  text-align:center;
-}
-.day-btn.active{border-color:var(--brass);color:var(--brass);background:rgba(232,185,74,0.08);}
-.day-focus{color:var(--text-mute);font-size:13px;margin:-6px 0 2px;}
+.day-row{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;}
+.day-btn{flex:1;min-width:84px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;color:var(--text-mute);font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.3px;text-transform:uppercase;padding:10px 4px;cursor:pointer;}
+.day-btn.active{border-color:var(--brass);color:var(--brass);background:rgba(232,185,74,.08);}
+.day-focus{color:var(--text-mute);font-size:13px;margin:0 0 4px;}
 .day-status{color:var(--text-mute);font-size:12px;margin:0 0 14px;}
 .day-status b{color:var(--teal);font-weight:500;}
 .ex-list{display:flex;flex-direction:column;}
-.ex-card{
-  background:var(--panel-2);
-  border:1px solid var(--line);
-  border-radius:10px;
-  margin-bottom:10px;
-  overflow:hidden;
-}
+.ex-card{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;overflow:hidden;}
 .ex-card:last-child{margin-bottom:0;}
 .ex-card.all-done{border-color:var(--brass-dim);}
-.ex-card-head{
-  display:flex;align-items:center;gap:10px;
-  padding:13px 14px;cursor:pointer;
-  background:none;border:none;width:100%;text-align:left;color:inherit;font:inherit;
-}
-.ex-card-head .ex-mini-icon{width:30px;height:26px;flex:none;color:var(--text-mute);}
-.ex-card-head .ex-mini-icon svg{display:block;width:100%;height:100%;}
-.ex-card-head .ex-head-info{flex:1;min-width:0;}
-.ex-card-head .ex-head-name{font-size:15px;font-weight:500;line-height:1.3;}
-.ex-card-head .ex-head-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-mute);margin-top:2px;}
-.ex-check{
-  width:24px;height:24px;flex:none;border-radius:50%;border:1.5px solid var(--line);
-  display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;
-}
+.ex-card-head{display:flex;align-items:center;gap:10px;padding:14px;cursor:pointer;background:none;border:none;width:100%;text-align:left;color:inherit;font:inherit;}
+.ex-head-info{flex:1;min-width:0;}
+.ex-head-name{font-size:16px;font-weight:500;line-height:1.3;}
+.ex-head-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-mute);margin-top:2px;}
+.ex-check{width:26px;height:26px;flex:none;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;}
 .ex-check.done{background:var(--brass);border-color:var(--brass);color:#1B1D1F;}
 .ex-chev{color:var(--text-mute);font-size:11px;flex:none;transition:transform .15s;}
 .ex-card.open .ex-chev{transform:rotate(180deg);}
 .ex-card-body{display:none;padding:0 14px 14px;border-top:1px solid var(--line);}
 .ex-card.open .ex-card-body{display:block;padding-top:12px;}
+.howto{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-bottom:12px;padding:12px;border-radius:8px;border:1px solid var(--brass-dim);background:rgba(232,185,74,.08);color:var(--brass);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:14px;cursor:pointer;}
+.howto-ic{font-size:11px;}
 .ex-card-mid{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
 .weight-stepper{display:flex;align-items:center;gap:6px;}
-.stepper-btn{
-  width:40px;height:40px;flex:none;
-  border-radius:8px;border:1px solid var(--line);background:var(--panel);
-  color:var(--brass);font-size:19px;font-weight:600;line-height:1;cursor:pointer;padding:0;
-}
-.stepper-btn:active{background:rgba(232,185,74,0.12);}
+.stepper-btn{width:42px;height:42px;flex:none;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--brass);font-size:20px;font-weight:600;line-height:1;cursor:pointer;padding:0;}
+.stepper-btn:active{background:rgba(232,185,74,.12);}
+.weight-input{width:76px;text-align:center;font-size:17px;padding:10px 4px;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:6px;font-family:'JetBrains Mono',monospace;}
+.unit{font-size:12px;color:var(--text-mute);}
 .ex-prev-inline{color:var(--text-mute);font-size:12px;margin-left:auto;white-space:nowrap;}
+.bodyweight{margin:0 0 12px;color:var(--text-mute);font-size:13px;}
 .ex-card-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
-input[type=number], input[type=date], input[type=text], textarea{
-  background:var(--panel-2);
-  border:1px solid var(--line);
-  color:var(--text);
-  border-radius:6px;
-  padding:6px 8px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:13px;
-  width:100%;
-}
-input[type=number]{width:64px;}
-.weight-input{
-  width:76px;
-  text-align:center;
-  font-size:16px;
-  padding:9px 4px;
-  flex:none;
-}
-.weight-cell{display:flex;align-items:center;gap:4px;}
 .set-checks{display:flex;gap:6px;flex-wrap:wrap;}
-.set-btn{
-  width:40px;
-  height:40px;
-  border-radius:8px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--text-mute);
-  font-family:'JetBrains Mono',monospace;
-  font-size:14px;
-  cursor:pointer;
-  padding:0;
-}
+.set-btn{width:42px;height:42px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text-mute);font-family:'JetBrains Mono',monospace;font-size:15px;cursor:pointer;padding:0;}
 .set-btn.done{background:var(--brass);border-color:var(--brass);color:#1B1D1F;font-weight:600;}
-.rest-btn{
-  min-width:100px;
-  border-radius:8px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  color:var(--teal);
-  font-family:'JetBrains Mono',monospace;
-  font-size:14px;
-  padding:9px 12px;
-  cursor:pointer;
-}
-.ex-howto{
-  display:inline-flex;align-items:center;gap:6px;margin-top:12px;
-  background:none;border:none;padding:0;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;
-  color:var(--teal);cursor:pointer;text-decoration:underline dotted;text-decoration-color:var(--text-mute);text-underline-offset:3px;
-}
-.ex-howto:hover{color:var(--brass);}
-.btn{
-  font-family:'Oswald',sans-serif;
-  text-transform:uppercase;
-  letter-spacing:0.4px;
-  font-size:13px;
-  border-radius:8px;
-  padding:10px 16px;
-  cursor:pointer;
-  border:1px solid var(--line);
-  background:var(--panel-2);
-  color:var(--text);
-}
+.rest-btn{min-width:100px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:14px;padding:10px 12px;cursor:pointer;}
+.btn{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:13px;border-radius:8px;padding:11px 16px;cursor:pointer;border:1px solid var(--line);background:var(--panel-2);color:var(--text);}
 .btn-primary{background:var(--brass);color:#1B1D1F;border-color:var(--brass);font-weight:600;}
 .btn-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center;}
-.section-title{
-  font-family:'Oswald',sans-serif;
-  text-transform:uppercase;
-  letter-spacing:0.4px;
-  font-size:15px;
-  margin:0 0 14px;
-  color:var(--text);
-}
 .hist-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);gap:10px;}
 .hist-row:last-child{border-bottom:none;}
-.muted{color:var(--text-mute);font-size:12px;}
-textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;}
-.empty{color:var(--text-mute);font-size:13px;text-align:center;padding:20px 0;}
-::placeholder{color:#5f6367;}
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.65);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:100;
-  padding:16px;
-}
-.modal-overlay.open{display:flex;}
-.modal-box{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:22px;
-  max-width:440px;
-  width:100%;
-  max-height:85vh;
-  overflow-y:auto;
-  position:relative;
-}
-.modal-close{
-  position:absolute;
-  top:12px;
-  right:12px;
-  background:none;
-  border:none;
-  color:var(--text-mute);
-  font-size:20px;
-  line-height:1;
-  cursor:pointer;
-}
-.modal-close:hover{color:var(--text);}
-.modal-box h2{
-  font-family:'Oswald',sans-serif;
-  text-transform:uppercase;
-  letter-spacing:0.3px;
-  font-size:18px;
-  margin:0 24px 4px 0;
-}
-.modal-target{color:var(--text-mute);font-size:12px;font-family:'JetBrains Mono',monospace;margin:0 0 12px;}
-.modal-icon{background:var(--panel-2);border-radius:8px;padding:8px;margin-bottom:14px;overflow:hidden;}
-.modal-icon svg{animation:modalIconMove 1.6s ease-in-out infinite alternate;transform-origin:50% 60%;}
-@keyframes modalIconMove{
-  from{transform:translateY(0) scale(1);}
-  to{transform:translateY(-6px) scale(1.035);}
-}
-.source-link{
-  display:block;width:100%;box-sizing:border-box;
-  background:var(--panel-2);border:1px solid var(--brass-dim);border-radius:8px;
-  padding:10px 12px;text-decoration:none;color:var(--text);
-}
-.source-link:hover{border-color:var(--brass);}
-.source-link .sl-label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:0.4px;font-size:13px;color:var(--brass);}
-.source-link .sl-sub{display:block;font-size:11.5px;color:var(--text-mute);margin-top:2px;}
-.modal-section{margin-bottom:14px;}
-.modal-section p{margin:0 0 6px;}
-.modal-section ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--text);}
-.modal-section ul.mistakes li{color:var(--coral);}
-.schema-box{
-  background:var(--panel-2);
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:12px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;
-  line-height:1.6;
-  white-space:pre;
-  overflow-x:auto;
-  color:var(--text-mute);
-  margin:10px 0 0;
-}
+details.notes{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+details.notes summary{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:15px;cursor:pointer;}
+details.notes h4{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:12px;color:var(--brass);margin:14px 0 4px;}
+details.notes p,details.notes li{font-size:13px;line-height:1.55;color:var(--text);margin:0 0 4px;}
+details.notes ul{margin:0;padding-left:18px;}
+.notes-title{color:var(--text-mute)!important;margin-top:8px!important;}
+.safety-note{margin-top:14px;padding:10px 12px;border-left:3px solid var(--coral);background:rgba(255,107,91,.08);border-radius:0 8px 8px 0;}
+.safety-note h4{color:var(--coral)!important;margin-top:0!important;}
+textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:6px;padding:8px;font-family:'JetBrains Mono',monospace;}
 .msg{font-size:12px;}
 .msg.err{color:var(--coral);}
 .msg.ok{color:var(--teal);}
-.plan-preview{font-size:13px;line-height:1.6;}
-.plan-preview b{color:var(--brass);}
-.timer-overlay{
-  position:fixed;inset:0;background:rgba(15,16,17,0.96);display:none;
-  align-items:center;justify-content:center;flex-direction:column;z-index:200;
-  color:var(--text);padding:24px;
-}
+.timer-overlay{position:fixed;inset:0;background:rgba(15,16,17,.96);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:200;padding:24px;}
 .timer-overlay.show{display:flex;}
-.timer-overlay .timer-label{font-size:15px;color:var(--text-mute);margin-bottom:6px;text-align:center;}
-.timer-overlay .timer-ring{position:relative;width:220px;height:220px;margin:12px 0 28px;}
-.timer-overlay .timer-ring svg{transform:rotate(-90deg);}
-.timer-overlay .timer-count{
-  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:'Oswald',sans-serif;font-size:56px;font-weight:600;color:var(--brass);
-}
-.timer-overlay .timer-rowbtns{display:flex;gap:12px;}
-.timer-overlay .timer-rowbtns button{
-  background:var(--panel-2);border:1px solid var(--line);color:var(--text);
-  padding:12px 20px;border-radius:30px;font-size:14px;font-weight:600;font-family:'Oswald',sans-serif;
-  text-transform:uppercase;letter-spacing:0.4px;cursor:pointer;
-}
-.timer-overlay .timer-skip{
-  margin-top:20px;background:none;border:none;color:var(--text-mute);font-size:13px;
-  text-decoration:underline;cursor:pointer;font-family:'Inter',sans-serif;
-}
-@media (max-width:480px){
-  .hero h1{font-size:24px;}
-  .day-btn{min-width:76px;}
-}
+.timer-label{font-size:15px;color:var(--text-mute);margin-bottom:6px;text-align:center;}
+.timer-ring{position:relative;width:220px;height:220px;margin:12px 0 28px;}
+.timer-ring svg{transform:rotate(-90deg);}
+.timer-count{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Oswald',sans-serif;font-size:56px;font-weight:600;color:var(--brass);}
+.timer-rowbtns{display:flex;gap:12px;}
+.timer-rowbtns button{background:var(--panel-2);border:1px solid var(--line);color:var(--text);padding:12px 20px;border-radius:30px;font-size:14px;font-weight:600;font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;cursor:pointer;}
+.timer-skip{margin-top:20px;background:none;border:none;color:var(--text-mute);font-size:13px;text-decoration:underline;cursor:pointer;font-family:'Inter',sans-serif;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:flex-end;justify-content:center;z-index:100;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--panel);border:1px solid var(--line);border-radius:16px 16px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));max-width:560px;width:100%;max-height:94vh;overflow-y:auto;position:relative;}
+@media (min-width:600px){.modal-overlay{align-items:center;padding:16px;}.modal-box{border-radius:14px;max-height:90vh;}}
+.modal-close{position:absolute;top:10px;right:12px;background:none;border:none;color:var(--text-mute);font-size:26px;line-height:1;cursor:pointer;padding:4px 8px;}
+.modal-box h2{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.3px;font-size:20px;margin:0 32px 2px 0;}
+.modal-target{color:var(--text-mute);font-size:12px;font-family:'JetBrains Mono',monospace;margin:0 0 12px;}
+.figure{background:var(--panel-2);border-radius:10px;overflow:hidden;}
+.figure svg{display:block;width:100%;height:auto;}
+.fig-bar{display:flex;gap:6px;margin:10px 0 8px;}
+.fig-bar button{flex:1;padding:10px 4px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--text-mute);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.3px;font-size:12px;cursor:pointer;}
+.fig-bar button.on{border-color:var(--brass);color:var(--brass);}
+.phase-cue{font-size:14px;line-height:1.5;margin:0 0 12px;min-height:63px;}
+.phase-cue b{color:var(--brass);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.3px;margin-right:4px;}
+.equip{font-size:13px;color:var(--text-mute);line-height:1.5;margin:0 0 14px;padding:10px 12px;background:var(--panel-2);border-radius:8px;}
+.equip b{color:var(--teal);font-weight:500;}
+.modal-box h3{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:14px;margin:16px 0 8px;}
+.modal-box ol,.modal-box ul{margin:0;padding-left:20px;font-size:14px;line-height:1.6;}
+.modal-box li{margin-bottom:5px;}
+.modal-box ul.mistakes li{color:#FFB4AB;}
+.safety{margin-top:14px;padding:10px 12px;border-left:3px solid var(--coral);background:rgba(255,107,91,.08);border-radius:0 8px 8px 0;font-size:13px;line-height:1.5;}
+.safety p{margin:0;}
+.general{font-size:12px;color:var(--text-mute);margin:14px 0 4px;line-height:1.5;}
+.links{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.source-link{display:block;background:var(--panel-2);border:1px solid var(--brass-dim);border-radius:8px;padding:11px 12px;text-decoration:none;color:var(--text);}
+.source-link .sl-label{font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.4px;font-size:13px;color:var(--brass);}
+.source-link .sl-sub{display:block;font-size:12px;color:var(--text-mute);margin-top:2px;}
+@media (max-width:480px){.hero h1{font-size:26px;}}
 </style>
 </head>
 <body>
 <div class="app">
-
-  <div class="hero">
-    <div>
-      <h1>Gym <span>Studio</span></h1>
-      <p id="app-subtitle">Vuestro sitio para entrenar, cada uno con su plan</p>
-    </div>
-  </div>
-
+  <div class="hero"><h1>Gym <span>Studio</span></h1><p>Vuestro sitio para entrenar, cada uno con su plan</p></div>
   <div class="profile-row" id="profile-row"></div>
-
   <div class="tabs">
     <button class="tab-btn active" data-view="plan">Plan</button>
     <button class="tab-btn" data-view="data">Datos</button>
@@ -355,1272 +132,964 @@ textarea{width:100%;height:150px;resize:vertical;font-size:12px;line-height:1.5;
 
   <section id="view-plan" class="active">
     <div class="card">
-      <div class="plan-picker">
-        <label for="plan-select">Entrenamientos</label>
-        <select id="plan-select"></select>
-      </div>
+      <div class="plan-picker"><label for="plan-select">Entrenamientos</label><select id="plan-select"></select></div>
       <div class="day-row" id="day-row"></div>
-      <div class="day-focus" id="day-focus"></div>
+      <p class="day-focus" id="day-focus"></p>
       <p class="day-status" id="day-status"></p>
       <div class="ex-list" id="ex-body"></div>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="save-session">Guardar sesión de hoy</button>
-        <span class="muted" id="save-msg"></span>
-      </div>
+      <div class="btn-row"><button class="btn btn-primary" id="save-session">Guardar sesión de hoy</button><span class="muted" id="save-msg"></span></div>
     </div>
+    <details class="notes" id="plan-notes"></details>
     <div class="card">
-      <p class="section-title" style="margin-bottom:6px;">Últimas sesiones</p>
-      <div id="history-list" class="muted">Todavía no has guardado ninguna sesión.</div>
+      <p class="section-title">Últimas sesiones</p>
+      <div id="history-list" class="muted"></div>
     </div>
   </section>
-
 
   <section id="view-data">
     <div class="card">
       <p class="section-title">Resumen para revisar con Claude</p>
-      <p class="muted">Genera un resumen de tu progreso reciente. Cópialo y pégamelo en el chat cuando quieras que revise tus datos y ajuste tu tabla.</p>
-      <div class="btn-row">
-        <button class="btn btn-primary" id="gen-summary">Generar resumen</button>
-        <button class="btn" id="copy-summary">Copiar</button>
-        <span class="msg" id="copy-summary-msg"></span>
-      </div>
-      <textarea id="summary-box" placeholder="Pulsa 'Generar resumen' para crear el texto..." readonly style="margin-top:12px;"></textarea>
+      <p class="muted">Genera un resumen de tu progreso reciente, cópialo y pégalo en el chat cuando quieras que ajuste tu plan.</p>
+      <div class="btn-row"><button class="btn btn-primary" id="gen-summary">Generar resumen</button><button class="btn" id="copy-summary">Copiar</button><span class="msg" id="copy-summary-msg"></span></div>
+      <textarea id="summary-box" readonly placeholder="Pulsa «Generar resumen»..." style="margin-top:12px;"></textarea>
     </div>
     <div class="card">
       <p class="section-title">Copia de seguridad</p>
-      <p class="muted">Los planes viven en la propia web y se ven en cualquier dispositivo. Lo que se guarda solo en este navegador es vuestro historial de sesiones y pesos. Descarga una copia de vez en cuando por si cambias de móvil o borras datos de navegación.</p>
-      <div class="btn-row">
-        <button class="btn" id="export-backup">Descargar copia de seguridad</button>
-        <label class="btn" style="cursor:pointer;">Restaurar copia<input type="file" id="import-backup" accept="application/json" style="display:none;"></label>
-      </div>
-      <span class="msg" id="backup-msg"></span>
+      <p class="muted">Los planes viven en la propia web y se ven en cualquier dispositivo. Lo que se guarda solo en este navegador es el historial de sesiones y los pesos. Descarga una copia de vez en cuando por si cambias de móvil o borras los datos del navegador.</p>
+      <div class="btn-row"><button class="btn" id="export-backup">Descargar copia</button><label class="btn" style="cursor:pointer;">Restaurar copia<input type="file" id="import-backup" accept="application/json" style="display:none;"></label></div>
+      <p class="msg" id="backup-msg"></p>
     </div>
   </section>
-
 </div>
 
 <div class="timer-overlay" id="timer-overlay">
   <div class="timer-label" id="timer-label">Descanso</div>
   <div class="timer-ring">
-    <svg width="220" height="220" viewBox="0 0 220 220">
-      <circle cx="110" cy="110" r="96" stroke="var(--line)" stroke-width="10" fill="none"/>
-      <circle id="timer-arc" cx="110" cy="110" r="96" stroke="var(--brass)" stroke-width="10" fill="none"
-        stroke-linecap="round" stroke-dasharray="603" stroke-dashoffset="0"/>
-    </svg>
+    <svg width="220" height="220" viewBox="0 0 220 220"><circle cx="110" cy="110" r="96" stroke="#383C3F" stroke-width="10" fill="none"/><circle id="timer-arc" cx="110" cy="110" r="96" stroke="#E8B94A" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="603" stroke-dashoffset="0"/></svg>
     <div class="timer-count" id="timer-count">90</div>
   </div>
-  <div class="timer-rowbtns">
-    <button type="button" id="timer-pause">Pausar</button>
-    <button type="button" id="timer-add15">+15 s</button>
-  </div>
+  <div class="timer-rowbtns"><button type="button" id="timer-pause">Pausar</button><button type="button" id="timer-add15">+15 s</button></div>
   <button type="button" class="timer-skip" id="timer-skip">Saltar descanso</button>
 </div>
 
 <div class="modal-overlay" id="modal-overlay">
-  <div class="modal-box">
+  <div class="modal-box" id="modal-box">
     <button class="modal-close" id="modal-close" aria-label="Cerrar">&times;</button>
-    <h2 id="modal-title"></h2>
-    <p class="modal-target" id="modal-target"></p>
-    <div class="modal-icon" id="modal-icon"></div>
-    <div class="modal-section">
-      <p class="section-title" style="font-size:13px;margin-bottom:6px;">Cómo hacerlo</p>
-      <ul id="modal-steps"></ul>
-    </div>
-    <div class="modal-section">
-      <p class="section-title" style="font-size:13px;margin-bottom:6px;">Errores comunes</p>
-      <ul id="modal-mistakes" class="mistakes"></ul>
-    </div>
-    <div id="modal-source"></div>
+    <h2 id="m-title"></h2>
+    <p class="modal-target" id="m-target"></p>
+    <div class="figure"><svg id="m-svg" viewBox="0 0 420 300" role="img" aria-label="Dibujo animado del ejercicio"></svg></div>
+    <div class="fig-bar"><button type="button" id="m-b1">1 · Inicio</button><button type="button" id="m-play"></button><button type="button" id="m-b2">2 · Final</button></div>
+    <p class="phase-cue" id="m-cue"></p>
+    <p class="equip" id="m-equip"></p>
+    <h3>Cómo hacerlo</h3><ol id="m-steps"></ol>
+    <h3>Errores que provocan lesiones</h3><ul class="mistakes" id="m-mistakes"></ul>
+    <div class="safety" id="m-safety"></div>
+    <p class="general">Respira de forma continua: exhala durante el esfuerzo y no contengas el aire. Si notas dolor agudo, mareo u opresión en el pecho, detén el ejercicio.</p>
+    <div class="links" id="m-links"></div>
   </div>
 </div>
 
 <script>
-const PLAN_TINO_V2_1 = {
-  "label": "Fuerza, masa muscular y primera dominada (v2.1, 28/09/2026)",
-  "goals": [
-    "Recuperar fuerza general",
-    "Recuperar y aumentar masa muscular",
-    "Conseguir la primera dominada estricta",
-    "Mejorar la capacidad física general (fuerza + caminar + menos sedentarismo)",
-    "Longevidad funcional: piernas, tracción, empuje, bisagra, estabilidad y capacidad aeróbica"
-  ],
-  "cardioNote": "Caminar a intensidad cómoda-moderada: 3×20-30 min en las semanas 1-2, 3-4×25-35 min en las semanas 3-4 y 4×30-40 min en las semanas 5-8, acercándose a ≥150 min/semana si la recuperación lo permite. Los jueves, recuperación activa caminando.",
-  "progressionNote": "Doble progresión: trabaja dentro del rango; cuando todas las series llegan al extremo alto con técnica estable y el RIR previsto, sube ligeramente la carga y vuelve al extremo bajo. Si una repetición necesita balanceo o compensación, no cuenta. RIR por semanas: 1-2 principales RIR 3; 3-4 principales RIR 2-3; 5-7 principales RIR 2; semana 8 evaluación. Sin series al fallo ni 1RM. Descansos autorregulados: principales alrededor de 90 s (añade 30-60 s si la siguiente serie se ve claramente perjudicada), accesorios alrededor de 60 s, core 30-60 s. En dominada asistida baja la banda solo cuando el rango completo sale estable, no por calendario. Si una sesión supera los 60 min, quita primero un accesorio, nunca un principal.",
-  "days": [
-    {
-      "id": "miercoles",
-      "label": "Miércoles",
-      "focus": "Superior A: dominadas + empuje + remo. Haz 2-3 series de aproximación antes del primer ejercicio pesado. Principales RIR 2-3, accesorios RIR 1-2, sin llegar al fallo. En la dominada asistida, el campo kg es la banda usada (10/20/30). Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
-      "exercises": [
-        {
-          "id": "mi1",
-          "name": "Dominada asistida",
-          "sets": 3,
-          "reps": "4-6",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
-            "label": "NASM — Band Assisted Pull-Up"
-          }
-        },
-        {
-          "id": "mi2",
-          "name": "Press banca con barra",
-          "sets": 3,
-          "reps": "6-8",
-          "rest": 90,
-          "pattern": "press"
-        },
-        {
-          "id": "mi3",
-          "name": "Remo con barra",
-          "sets": 3,
-          "reps": "6-8",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/",
-            "label": "ACE Fitness — Exercise Library: Bent-Over Row"
-          }
-        },
-        {
-          "id": "mi4",
-          "name": "Press inclinado con mancuernas",
-          "sets": 2,
-          "reps": "8-12",
-          "rest": 60,
-          "pattern": "press"
-        },
-        {
-          "id": "mi5",
-          "name": "Curl de bíceps",
-          "sets": 2,
-          "reps": "8-12",
-          "rest": 60,
-          "pattern": "isolation"
-        },
-        {
-          "id": "mi6",
-          "name": "Face pull con banda",
-          "sets": 2,
-          "reps": "12-15",
-          "rest": 60,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/face-pull",
-            "label": "NASM — Face Pull"
-          }
-        }
-      ]
-    },
-    {
-      "id": "viernes",
-      "label": "Viernes",
-      "focus": "Inferior A: sentadilla + bisagra + glúteo. Haz 2-3 series de aproximación antes de la sentadilla. Principales RIR 2-3, accesorios RIR 1-2. Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
-      "exercises": [
-        {
-          "id": "vi1",
-          "name": "Sentadilla con barra",
-          "sets": 3,
-          "reps": "5-8",
-          "rest": 90,
-          "pattern": "squat",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/",
-            "label": "ACE Fitness — Exercise Library: Back Squat"
-          }
-        },
-        {
-          "id": "vi2",
-          "name": "Peso muerto rumano",
-          "sets": 3,
-          "reps": "6-8",
-          "rest": 90,
-          "pattern": "hinge",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
-            "label": "NASM — Romanian Deadlift (Barbell)"
-          }
-        },
-        {
-          "id": "vi3",
-          "name": "Hip thrust con barra",
-          "sets": 3,
-          "reps": "8-10",
-          "rest": 90,
-          "pattern": "bridge",
-          "source": {
-            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
-            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
-          }
-        },
-        {
-          "id": "vi4",
-          "name": "Split squat / búlgara",
-          "sets": 2,
-          "reps": "8-10 por lado",
-          "rest": 60,
-          "pattern": "lunge",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/bulgarian-split-squat",
-            "label": "NASM — Bulgarian Split Squat"
-          }
-        },
-        {
-          "id": "vi5",
-          "name": "Elevación de gemelos",
-          "sets": 2,
-          "reps": "10-15",
-          "rest": 60,
-          "pattern": "isolation"
-        },
-        {
-          "id": "vi6",
-          "name": "Dead bug",
-          "sets": 2,
-          "reps": "8 por lado",
-          "rest": 45,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
-            "label": "NASM — Dead Bug"
-          }
-        }
-      ]
-    },
-    {
-      "id": "sabado",
-      "label": "Sábado",
-      "focus": "Superior B: segunda práctica de dominada + volumen superior. Principales RIR 2, accesorios RIR 1-2. En la dominada asistida, el campo kg es la banda usada (10/20/30). Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
-      "exercises": [
-        {
-          "id": "sa1",
-          "name": "Dominada asistida",
-          "sets": 3,
-          "reps": "5-8",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
-            "label": "NASM — Band Assisted Pull-Up"
-          }
-        },
-        {
-          "id": "sa2",
-          "name": "Press banca / variante",
-          "sets": 3,
-          "reps": "8-10",
-          "rest": 90,
-          "pattern": "press"
-        },
-        {
-          "id": "sa3",
-          "name": "Remo unilateral",
-          "sets": 3,
-          "reps": "8-12 por lado",
-          "rest": 60,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/126/single-arm-row/",
-            "label": "ACE Fitness — Exercise Library: Single Arm Row"
-          }
-        },
-        {
-          "id": "sa4",
-          "name": "Jalón con banda",
-          "sets": 2,
-          "reps": "10-15",
-          "rest": 60,
-          "pattern": "pull"
-        },
-        {
-          "id": "sa5",
-          "name": "Curl de bíceps",
-          "sets": 2,
-          "reps": "10-15",
-          "rest": 60,
-          "pattern": "isolation"
-        },
-        {
-          "id": "sa6",
-          "name": "Extensión de tríceps",
-          "sets": 2,
-          "reps": "10-15",
-          "rest": 60,
-          "pattern": "isolation"
-        },
-        {
-          "id": "sa7",
-          "name": "Pallof press",
-          "sets": 2,
-          "reps": "8-12 por lado",
-          "rest": 45,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.physitrack.com/exercise-library/how-to-perform-the-pallof-press-exercise",
-            "label": "Physitrack — Pallof Press (guía de fisioterapia)"
-          }
-        }
-      ]
-    },
-    {
-      "id": "domingo",
-      "label": "Domingo",
-      "focus": "Inferior B + core: pierna y glúteo con la sentadilla más ligera. Principales RIR 2-3, accesorios RIR 1-2, core con control. Respiración controlada, sin apneas. Para la sesión si notas dolor u opresión en el pecho, mareo importante o falta de aire desproporcionada.",
-      "exercises": [
-        {
-          "id": "do1",
-          "name": "Sentadilla (variante más ligera)",
-          "sets": 3,
-          "reps": "8-10",
-          "rest": 90,
-          "pattern": "squat",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/",
-            "label": "ACE Fitness — Exercise Library: Back Squat"
-          }
-        },
-        {
-          "id": "do2",
-          "name": "Hip thrust con barra",
-          "sets": 3,
-          "reps": "10-12",
-          "rest": 90,
-          "pattern": "bridge",
-          "source": {
-            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
-            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
-          }
-        },
-        {
-          "id": "do3",
-          "name": "RDL con barra o mancuernas",
-          "sets": 2,
-          "reps": "8-12",
-          "rest": 90,
-          "pattern": "hinge",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
-            "label": "NASM — Romanian Deadlift (Barbell)"
-          }
-        },
-        {
-          "id": "do4",
-          "name": "Step-up / split squat",
-          "sets": 2,
-          "reps": "8-12 por lado",
-          "rest": 60,
-          "pattern": "lunge",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/28/step-up/",
-            "label": "ACE Fitness — Exercise Library: Step-Up"
-          }
-        },
-        {
-          "id": "do5",
-          "name": "Elevación de gemelos",
-          "sets": 2,
-          "reps": "12-15",
-          "rest": 60,
-          "pattern": "isolation"
-        },
-        {
-          "id": "do6",
-          "name": "Plancha lateral",
-          "sets": 2,
-          "reps": "20-40 seg por lado",
-          "rest": 45,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/side-plank",
-            "label": "NASM — Side Plank"
-          }
-        },
-        {
-          "id": "do7",
-          "name": "Bird dog",
-          "sets": 2,
-          "reps": "6-8 por lado",
-          "rest": 45,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/bird-dog",
-            "label": "NASM — Bird Dog"
-          }
-        }
-      ]
+/* Motor de ilustraciones: maniquí paramétrico (vista lateral / frontal) + material del gimnasio de casa.
+   Ángulos en grados: 0 = derecha, 90 = arriba, 180 = izquierda, -90 = abajo. */
+var GS = (function(){
+  var R = Math.PI/180, G = 272;
+  var L = {tor:60, neck:9, head:11, ua:32, fa:29, hand:6, th:45, sh:43, ft:20, heel:6};
+  var COL = {near:'#EDE9E0', far:'#8C9298', out:'#2A2E31', plate:'#5A6066', plateS:'#A5ABB1', bench:'#4A4F55',
+             post:'#6B7177', band:'#4FD1C5', brass:'#E8B94A', floor:'#555B61', tatami:'#363B40'};
+  function P(len,deg){ return [len*Math.cos(deg*R), -len*Math.sin(deg*R)]; }
+  function add(a,b){ return [a[0]+b[0], a[1]+b[1]]; }
+  function f1(n){ return Math.round(n*10)/10; }
+
+  /* ---------- interpolación ---------- */
+  function lerpAng(a,b,t){ var d=((b-a+540)%360)-180; return a+d*t; }
+  function norm(p){
+    var q={}; for(var k in p) q[k]=p[k];
+    if(q.root && q.root[0]!=='front' && q.T!==undefined){
+      if(q.aF===undefined) q.aF=q.aN; if(q.fF===undefined) q.fF=q.fN;
+      if(q.tF===undefined) q.tF=q.tN; if(q.sF===undefined) q.sF=q.sN; if(q.xN===undefined) q.xN=0; if(q.xF===undefined) q.xF=q.xN;
     }
-  ]
-};
-
-const PLAN_CRIS_V1_2 = {
-  "label": "Fuerza · glúteos · core · progresión a dominadas (v1.2, 08/09/2026)",
-  "goals": [
-    "Ganar fuerza y masa en glúteos y piernas (3 exposiciones semanales)",
-    "Mejorar estabilidad de core: anti-extensión, antirrotación y estabilidad lateral",
-    "Progresar desde cero hasta la primera dominada estricta",
-    "Aprender bien los patrones de sentadilla, bisagra de cadera, empuje y tracción",
-    "Mantener peso y composición corporal — no es un plan de pérdida de peso"
-  ],
-  "cardioNote": "No se incluye cardio adicional como herramienta de pérdida de peso; el objetivo es rendimiento, no bajar de peso.",
-  "progressionNote": "Doble progresión: primero sube repeticiones dentro del rango indicado; cuando completes el rango alto en todas las series con buena técnica, sube ligeramente el peso y vuelve a la parte baja del rango. Respeta el RIR (repeticiones en reserva) de cada ejercicio — no busques el fallo. En dominada asistida la progresión es reducir la asistencia de la banda solo cuando 4×4-6 salga sólido, no por calendario. Calidad antes que carga: si la técnica se deteriora, no se avanza. Señales de suelo pélvico a vigilar en cualquier sesión: aumento del abombamiento, sensación de peso o presión, pérdida de orina durante o después de entrenar, o dolor pélvico/perineal — si aparecen, reduce esa sesión y coméntalo; no fuerces la progresión.",
-  "days": [
-    {
-      "id": "lunes",
-      "label": "Lunes",
-      "focus": "Glúteos + piernas + core. Calentamiento 6-8 min antes de empezar. RIR objetivo 2-3.",
-      "exercises": [
-        {
-          "id": "lu1",
-          "name": "Hip thrust con barra",
-          "sets": 4,
-          "reps": "8-10",
-          "rest": 105,
-          "pattern": "bridge",
-          "source": {
-            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
-            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
-          }
-        },
-        {
-          "id": "lu2",
-          "name": "Sentadilla con barra",
-          "sets": 3,
-          "reps": "8-10",
-          "rest": 90,
-          "pattern": "squat",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/",
-            "label": "ACE Fitness — Exercise Library: Back Squat"
-          }
-        },
-        {
-          "id": "lu3",
-          "name": "Peso muerto rumano",
-          "sets": 3,
-          "reps": "8-10",
-          "rest": 90,
-          "pattern": "hinge",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell",
-            "label": "NASM — Romanian Deadlift (Barbell)"
-          }
-        },
-        {
-          "id": "lu4",
-          "name": "Abducción con banda",
-          "sets": 3,
-          "reps": "15-20",
-          "rest": 45,
-          "pattern": "isolation",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/155/standing-hip-abduction/",
-            "label": "ACE Fitness — Exercise Library: Standing Hip Abduction"
-          }
-        },
-        {
-          "id": "lu5",
-          "name": "Dead bug",
-          "sets": 3,
-          "reps": "6-8 por lado",
-          "rest": 38,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
-            "label": "NASM — Dead Bug"
-          }
-        }
-      ]
-    },
-    {
-      "id": "martes",
-      "label": "Martes",
-      "focus": "Espalda + dominadas + core. Calentamiento específico de hombro 6-8 min. Cierra con 3-5 min de respiración/coordinación pélvica, sin dolor ni presión. Prioridad: técnica de dominada sin acumular intentos fallidos.",
-      "exercises": [
-        {
-          "id": "ma1",
-          "name": "Dominada asistida",
-          "sets": 4,
-          "reps": "4-6",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
-            "label": "NASM — Band Assisted Pull-Up"
-          }
-        },
-        {
-          "id": "ma2",
-          "name": "Remo con barra",
-          "sets": 3,
-          "reps": "8-10",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/",
-            "label": "ACE Fitness — Exercise Library: Bent-Over Row"
-          }
-        },
-        {
-          "id": "ma3",
-          "name": "Negativa de dominada",
-          "sets": 3,
-          "reps": "2-3",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.acefitness.org/resources/pros/expert-articles/5565/4-moves-to-help-you-master-the-pull-up/",
-            "label": "ACE Fitness — 4 Moves to Help You Master the Pull-Up"
-          }
-        },
-        {
-          "id": "ma4",
-          "name": "Remo unilateral",
-          "sets": 3,
-          "reps": "10 por lado",
-          "rest": 60,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/126/single-arm-row/",
-            "label": "ACE Fitness — Exercise Library: Single Arm Row"
-          }
-        },
-        {
-          "id": "ma5",
-          "name": "Face pull con banda",
-          "sets": 3,
-          "reps": "12-15",
-          "rest": 45,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/face-pull",
-            "label": "NASM — Face Pull"
-          }
-        },
-        {
-          "id": "ma6",
-          "name": "Pallof press",
-          "sets": 3,
-          "reps": "8-10 por lado",
-          "rest": 38,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.physitrack.com/exercise-library/how-to-perform-the-pallof-press-exercise",
-            "label": "Physitrack — Pallof Press (guía de fisioterapia)"
-          }
-        }
-      ]
-    },
-    {
-      "id": "jueves",
-      "label": "Jueves",
-      "focus": "Glúteos + piernas. Calentamiento 6-8 min. Segunda sesión de tren inferior de la semana — volumen suficiente, sin llevar cada serie al esfuerzo máximo.",
-      "exercises": [
-        {
-          "id": "ju1",
-          "name": "Hip thrust con barra",
-          "sets": 3,
-          "reps": "10-12",
-          "rest": 90,
-          "pattern": "bridge",
-          "source": {
-            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
-            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
-          }
-        },
-        {
-          "id": "ju2",
-          "name": "Sentadilla búlgara",
-          "sets": 3,
-          "reps": "8-10 por lado",
-          "rest": 83,
-          "pattern": "lunge",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/bulgarian-split-squat",
-            "label": "NASM — Bulgarian Split Squat"
-          }
-        },
-        {
-          "id": "ju3",
-          "name": "Peso muerto rumano con mancuernas",
-          "sets": 3,
-          "reps": "10-12",
-          "rest": 83,
-          "pattern": "hinge",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/dumbbell-romanian-deadlift",
-            "label": "NASM — Dumbbell Romanian Deadlift"
-          }
-        },
-        {
-          "id": "ju4",
-          "name": "Step-up",
-          "sets": 3,
-          "reps": "8-10 por lado",
-          "rest": 68,
-          "pattern": "lunge",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/28/step-up/",
-            "label": "ACE Fitness — Exercise Library: Step-Up"
-          }
-        },
-        {
-          "id": "ju5",
-          "name": "Abducción con banda",
-          "sets": 3,
-          "reps": "15-20",
-          "rest": 45,
-          "pattern": "isolation",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/155/standing-hip-abduction/",
-            "label": "ACE Fitness — Exercise Library: Standing Hip Abduction"
-          }
-        },
-        {
-          "id": "ju6",
-          "name": "Side plank",
-          "sets": 3,
-          "reps": "20-30 seg por lado",
-          "rest": 38,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/side-plank",
-            "label": "NASM — Side Plank"
-          }
-        },
-        {
-          "id": "ju7",
-          "name": "Bird dog",
-          "sets": 2,
-          "reps": "8 por lado",
-          "rest": 30,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/bird-dog",
-            "label": "NASM — Bird Dog"
-          }
-        }
-      ]
-    },
-    {
-      "id": "sabado",
-      "label": "Sábado",
-      "focus": "Dominadas + tren superior + exposición extra de glúteo/core.",
-      "exercises": [
-        {
-          "id": "sa1",
-          "name": "Dominada asistida",
-          "sets": 4,
-          "reps": "4-6",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up",
-            "label": "NASM — Band Assisted Pull-Up"
-          }
-        },
-        {
-          "id": "sa2",
-          "name": "Remo con barra",
-          "sets": 3,
-          "reps": "8-10",
-          "rest": 90,
-          "pattern": "pull",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/",
-            "label": "ACE Fitness — Exercise Library: Bent-Over Row"
-          }
-        },
-        {
-          "id": "sa3",
-          "name": "Press de banca con mancuernas",
-          "sets": 3,
-          "reps": "8-12",
-          "rest": 83,
-          "pattern": "press",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/19/chest-press/",
-            "label": "ACE Fitness — Exercise Library: Dumbbell Chest Press"
-          }
-        },
-        {
-          "id": "sa4",
-          "name": "Hip thrust con barra",
-          "sets": 3,
-          "reps": "12-15",
-          "rest": 83,
-          "pattern": "bridge",
-          "source": {
-            "url": "https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/",
-            "label": "ACE Fitness — Understanding the Barbell Hip Thrust"
-          }
-        },
-        {
-          "id": "sa5",
-          "name": "Elevaciones laterales",
-          "sets": 2,
-          "reps": "12-15",
-          "rest": 45,
-          "pattern": "isolation",
-          "source": {
-            "url": "https://www.acefitness.org/resources/everyone/exercise-library/26/lateral-raise/",
-            "label": "ACE Fitness — Exercise Library: Lateral Raise"
-          }
-        },
-        {
-          "id": "sa6",
-          "name": "Dead bug",
-          "sets": 3,
-          "reps": "6-8 por lado",
-          "rest": 38,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.nasm.org/resource-center/exercise-library/dead-bug",
-            "label": "NASM — Dead Bug"
-          }
-        },
-        {
-          "id": "sa7",
-          "name": "Pallof press",
-          "sets": 2,
-          "reps": "10 por lado",
-          "rest": 38,
-          "pattern": "plank",
-          "source": {
-            "url": "https://www.physitrack.com/exercise-library/how-to-perform-the-pallof-press-exercise",
-            "label": "Physitrack — Pallof Press (guía de fisioterapia)"
-          }
-        }
-      ]
-    }
-  ]
-};
-
-const PATTERN_VALUES = ['press','pull','squat','lunge','hinge','bridge','plank','isolation','backext','legraise'];
-
-/* Los planes viven dentro del código: cualquier dispositivo que abra la web los ve.
-   Para añadir un plan nuevo a un perfil, se añade una entrada a su lista. */
-const PLANS = {
-  p1: [ { id:'tino-v2-1', name:'Plan 1 · Fuerza, masa y dominadas (v2.1)', plan: PLAN_TINO_V2_1 } ],
-  p2: [ { id:'cris-v1-2', name:'Plan 1 · Fuerza, glúteos y dominadas (v1.2)', plan: PLAN_CRIS_V1_2 } ]
-};
-
-/* ---------- Perfiles ---------- */
-const ACTIVE_KEY = 'gymstudio:active';
-const PROFILES = [
-  { id:'p1', name:'Tino' },
-  { id:'p2', name:'Cris' }
-];
-
-let profiles = PROFILES;
-let activeProfileId = null;
-let activePlanId = null;
-let plan = null;
-let history = [];
-let currentDay = null;
-
-function activePlanKey(pid){ return `gymstudio:${pid}:activePlan`; }
-function historyKey(pid, planId){ return `gymstudio:${pid}:${planId}:history`; }
-
-function todayStr(){
-  return new Date().toISOString().slice(0,10);
-}
-
-const WEEKDAYS_ES = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-function weekdayName(dateStr){
-  const d = new Date(dateStr + 'T00:00:00');
-  const name = WEEKDAYS_ES[d.getDay()];
-  return name.charAt(0).toUpperCase() + name.slice(1);
-}
-
-function suggestNextDayId(){
-  if(!plan.days.length) return null;
-  if(history.length === 0) return plan.days[0].id;
-  const lastEntry = history[history.length-1];
-  const idx = plan.days.findIndex(d=>d.id===lastEntry.dayId);
-  if(idx === -1) return plan.days[0].id;
-  return plan.days[(idx+1) % plan.days.length].id;
-}
-
-function renderDayStatus(){
-  const el = document.getElementById('day-status');
-  if(!plan.days.length){ el.textContent = ''; return; }
-  const todayWd = weekdayName(todayStr());
-  const last = history.length ? history[history.length-1] : null;
-  const lastDay = last ? plan.days.find(d=>d.id===last.dayId) : null;
-  if(!last || !lastDay){
-    el.innerHTML = `Hoy es <b>${todayWd}</b>. Todavía no has entrenado con este plan — empieza por <b>${plan.days[0].label}</b>.`;
-    return;
+    return q;
   }
-  el.innerHTML = `Hoy es <b>${todayWd}</b>. Última sesión: <b>${lastDay.label}</b> el ${weekdayName(last.date)} (${last.date}).`;
-}
+  function mix(A,B,t){
+    A=norm(A); B=norm(B);
+    var o={};
+    for(var k in A){
+      if(k==='root'){ o.root=[A.root[0], A.root[1]+(B.root[1]-A.root[1])*t, A.root[2]+(B.root[2]-A.root[2])*t]; o.root=[A.root[0],f(A.root[1],B.root[1],t),f(A.root[2],B.root[2],t)]; }
+      else if(typeof A[k]==='number'){ o[k]=(B[k]===undefined)?A[k]:lerpAng(A[k],B[k],t); }
+      else o[k]=A[k];
+    }
+    return o;
+    function f(a,b,t){ return a+(b-a)*t; }
+  }
 
-function loadProfiles(){
-  activeProfileId = localStorage.getItem(ACTIVE_KEY) || profiles[0].id;
-  if(!profiles.find(p=>p.id===activeProfileId)) activeProfileId = profiles[0].id;
-}
+  /* ---------- vista lateral ---------- */
+  function solveSide(p){
+    var q={}; for(var k in p) q[k]=p[k];
+    if(q.aF===undefined) q.aF=q.aN; if(q.fF===undefined) q.fF=q.fN;
+    if(q.tF===undefined) q.tF=q.tN; if(q.sF===undefined) q.sF=q.sN; if(q.xF===undefined) q.xF=q.xN||0;
+    var T=q.T; if(q.H===undefined) q.H = (Math.abs(T-90)<=60) ? T+(90-T)*0.4 : T;
+    var hip=[0,0], j={};
+    j.hip=hip; j.sho=add(hip,P(L.tor,T)); j.neck=add(j.sho,P(L.neck,q.N===undefined?T:q.N)); j.head=add(j.neck,P(L.head,q.H));
+    var US=q.uaS||1, FS=q.faS||1;
+    j.elN=add(j.sho,P(L.ua*US,q.aN)); j.wrN=add(j.elN,P(L.fa*FS,q.fN)); j.hdN=add(j.wrN,P(L.hand,q.fN));
+    j.elF=add(j.sho,P(L.ua*US,q.aF)); j.wrF=add(j.elF,P(L.fa*FS,q.fF)); j.hdF=add(j.wrF,P(L.hand,q.fF));
+    j.knN=add(hip,P(L.th,q.tN)); j.anN=add(j.knN,P(L.sh,q.sN)); j.toN=add(j.anN,P(L.ft,q.xN||0)); j.heN=add(j.anN,P(-L.heel,q.xN||0));
+    j.knF=add(hip,P(L.th,q.tF)); j.anF=add(j.knF,P(L.sh,q.sF)); j.toF=add(j.anF,P(L.ft,q.xF)); j.heF=add(j.anF,P(-L.heel,q.xF));
+    var rj=q.root[0], off=[q.root[1]-j[rj][0], q.root[2]-j[rj][1]];
+    for(var n in j) j[n]=add(j[n],off);
+    return j;
+  }
+  function seg(a,b,w,c){
+    return '<line x1="'+f1(a[0])+'" y1="'+f1(a[1])+'" x2="'+f1(b[0])+'" y2="'+f1(b[1])+'" stroke="'+COL.out+'" stroke-width="'+(w+3)+'" stroke-linecap="round"/>'+
+           '<line x1="'+f1(a[0])+'" y1="'+f1(a[1])+'" x2="'+f1(b[0])+'" y2="'+f1(b[1])+'" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round"/>';
+  }
+  function circ(c,r,fill,stroke,sw){ return '<circle cx="'+f1(c[0])+'" cy="'+f1(c[1])+'" r="'+r+'" fill="'+fill+'" stroke="'+(stroke||'none')+'" stroke-width="'+(sw||0)+'"/>'; }
 
-function renderProfileRow(){
-  const row = document.getElementById('profile-row');
-  row.innerHTML = '';
-  profiles.forEach(p=>{
-    const btn = document.createElement('button');
-    btn.className = 'profile-btn' + (p.id===activeProfileId ? ' active' : '');
-    btn.textContent = p.name;
-    btn.addEventListener('click', ()=>{
-      if(p.id !== activeProfileId){
-        activeProfileId = p.id;
-        localStorage.setItem(ACTIVE_KEY, activeProfileId);
-        loadProfileData();
-        renderProfileRow();
-      }
+  function figureSide(j){
+    var s='';
+    s+=seg(j.elF,j.wrF,7,COL.far)+seg(j.sho,j.elF,8,COL.far)+seg(j.wrF,j.hdF,6,COL.far);
+    s+=seg(j.knF,j.anF,9,COL.far)+seg(j.hip,j.knF,12,COL.far)+seg(j.heF,j.toF,8,COL.far);
+    s+=seg(j.hip,j.sho,16,COL.near)+seg(j.sho,j.neck,6,COL.near)+circ(j.head,L.head,COL.near,COL.out,3);
+    s+=seg(j.knN,j.anN,9,COL.near)+seg(j.hip,j.knN,13,COL.near)+seg(j.heN,j.toN,8,COL.near);
+    s+=seg(j.sho,j.elN,8,COL.near)+seg(j.elN,j.wrN,7,COL.near)+seg(j.wrN,j.hdN,6,COL.near);
+    return s;
+  }
+
+  /* ---------- vista frontal ---------- */
+  function solveFront(p){
+    var j={}, hx=p.root[0], hy=p.root[1]-(L.th+L.sh)-6;
+    var sp=function(o){return Math.sin(o*R);}, cp=function(o){return Math.cos(o*R);};
+    j.hipC=[hx,hy]; j.hL=[hx-9,hy]; j.hR=[hx+9,hy];
+    j.knL=[j.hL[0]-sp(p.oL)*L.th, j.hL[1]+cp(p.oL)*L.th]; j.anL=[j.knL[0]-sp(p.kL)*L.sh, j.knL[1]+cp(p.kL)*L.sh];
+    j.knR=[j.hR[0]+sp(p.oR)*L.th, j.hR[1]+cp(p.oR)*L.th]; j.anR=[j.knR[0]+sp(p.kR)*L.sh, j.knR[1]+cp(p.kR)*L.sh];
+    j.shC=[hx,hy-L.tor]; j.sL=[hx-17,hy-L.tor]; j.sR=[hx+17,hy-L.tor];
+    j.neck=[hx,hy-L.tor-L.neck]; j.head=[hx,hy-L.tor-L.neck-L.head];
+    j.elL=[j.sL[0]-sp(p.sL)*L.ua, j.sL[1]+cp(p.sL)*L.ua]; j.wrL=[j.elL[0]-sp(p.eL)*L.fa, j.elL[1]+cp(p.eL)*L.fa];
+    j.elR=[j.sR[0]+sp(p.sR)*L.ua, j.sR[1]+cp(p.sR)*L.ua]; j.wrR=[j.elR[0]+sp(p.eR)*L.fa, j.elR[1]+cp(p.eR)*L.fa];
+    return j;
+  }
+  function figureFront(j){
+    var s='';
+    s+=seg(j.hL,j.knL,13,COL.near)+seg(j.knL,j.anL,9,COL.near)+seg(j.hR,j.knR,13,COL.near)+seg(j.knR,j.anR,9,COL.near);
+    s+=seg([j.anL[0]-3,j.anL[1]+2],[j.anL[0]-9,j.anL[1]+3],7,COL.near)+seg([j.anR[0]+3,j.anR[1]+2],[j.anR[0]+9,j.anR[1]+3],7,COL.near);
+    s+=seg(j.hL,j.hR,12,COL.near)+seg(j.hipC,j.shC,26,COL.near)+seg(j.sL,j.sR,10,COL.near);
+    s+=seg(j.sL,j.elL,8,COL.near)+seg(j.elL,j.wrL,7,COL.near)+seg(j.sR,j.elR,8,COL.near)+seg(j.elR,j.wrR,7,COL.near);
+    s+=seg(j.shC,j.neck,6,COL.near)+circ(j.head,L.head,COL.near,COL.out,3);
+    return s;
+  }
+
+  /* ---------- material ---------- */
+  function pt(spec,j){ return (typeof spec[0]==='string') ? [j[spec[0]][0]+spec[1], j[spec[0]][1]+spec[2]] : spec; }
+  function item(it,j){
+    var s='';
+    switch(it.k){
+      case 'plate': { var c=pt(it.at,j); s+=circ(c,it.r||13,COL.plate,COL.plateS,2)+circ(c,3,COL.out,COL.plateS,1); break; }
+      case 'db': { var c2=pt(it.at,j); s+=circ(c2,it.r||9,COL.plate,COL.plateS,2)+circ(c2,2.5,COL.out,'none',0); break; }
+      case 'dbF': { var c3=pt(it.at,j); s+='<rect x="'+f1(c3[0]-13)+'" y="'+f1(c3[1]-5)+'" width="5" height="10" rx="1.5" fill="'+COL.plate+'" stroke="'+COL.plateS+'" stroke-width="1.5"/><rect x="'+f1(c3[0]+8)+'" y="'+f1(c3[1]-5)+'" width="5" height="10" rx="1.5" fill="'+COL.plate+'" stroke="'+COL.plateS+'" stroke-width="1.5"/><line x1="'+f1(c3[0]-8)+'" y1="'+f1(c3[1])+'" x2="'+f1(c3[0]+8)+'" y2="'+f1(c3[1])+'" stroke="'+COL.plateS+'" stroke-width="3"/>'; break; }
+      case 'bench': {
+        var x=it.x, y=it.y, w=it.w, h=it.h||8;
+        s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="3" fill="'+COL.bench+'" stroke="'+COL.plateS+'" stroke-width="1"/>';
+        s+='<line x1="'+(x+8)+'" y1="'+(y+h)+'" x2="'+(x+8)+'" y2="'+G+'" stroke="'+COL.post+'" stroke-width="4"/><line x1="'+(x+w-8)+'" y1="'+(y+h)+'" x2="'+(x+w-8)+'" y2="'+G+'" stroke="'+COL.post+'" stroke-width="4"/>';
+        break; }
+      case 'incline': { // respaldo inclinado + asiento
+        var sx=it.x, sy=it.y, ang=it.ang||40, len=it.len||95, w2=it.w||50;
+        var ex=sx-len*Math.cos(ang*R), ey=sy-len*Math.sin(ang*R);
+        s+='<line x1="'+sx+'" y1="'+sy+'" x2="'+f1(ex)+'" y2="'+f1(ey)+'" stroke="'+COL.bench+'" stroke-width="10" stroke-linecap="round"/>';
+        s+='<line x1="'+sx+'" y1="'+sy+'" x2="'+(sx+w2)+'" y2="'+sy+'" stroke="'+COL.bench+'" stroke-width="10" stroke-linecap="round"/>';
+        s+='<line x1="'+(sx+10)+'" y1="'+(sy+5)+'" x2="'+(sx+10)+'" y2="'+G+'" stroke="'+COL.post+'" stroke-width="4"/><line x1="'+(sx-30)+'" y1="'+(sy-10)+'" x2="'+(sx-48)+'" y2="'+G+'" stroke="'+COL.post+'" stroke-width="4"/>';
+        break; }
+      case 'post': {
+        s+='<line x1="'+it.x+'" y1="'+(it.y1===undefined?G:it.y1)+'" x2="'+it.x+'" y2="'+it.y2+'" stroke="'+COL.post+'" stroke-width="7" stroke-linecap="round"/>';
+        if(it.hook!==undefined) s+='<line x1="'+it.x+'" y1="'+it.hook+'" x2="'+(it.x+(it.hl||14))+'" y2="'+it.hook+'" stroke="'+COL.plateS+'" stroke-width="4" stroke-linecap="round"/>';
+        break; }
+      case 'pbar': { s+=circ(it.at,5,COL.plateS,COL.out,2); break; }
+      case 'box': { s+='<rect x="'+it.x+'" y="'+it.y+'" width="'+it.w+'" height="'+it.h+'" rx="2" fill="'+COL.bench+'" stroke="'+COL.plateS+'" stroke-width="1"/>'; break; }
+      case 'band': {
+        var a=pt(it.a,j), b=pt(it.b,j), sag=it.sag||0, mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2+sag;
+        s+='<path d="M'+f1(a[0])+' '+f1(a[1])+' Q'+f1(mx)+' '+f1(my)+' '+f1(b[0])+' '+f1(b[1])+'" fill="none" stroke="'+COL.band+'" stroke-width="3" stroke-linecap="round"/>'+circ(a,3.5,COL.band,COL.out,1);
+        break; }
+      case 'mark': { var m=pt(it.at,j); s+='<path d="M'+f1(m[0]-6)+' '+f1(m[1])+' h12 M'+f1(m[0])+' '+f1(m[1]-6)+' v12" stroke="'+COL.brass+'" stroke-width="2" opacity=".0"/>'; break; }
+    }
+    return s;
+  }
+
+  function scene(){ // suelo + tatami
+    return '<rect x="0" y="'+G+'" width="420" height="28" fill="'+COL.tatami+'"/><line x1="0" y1="'+G+'" x2="420" y2="'+G+'" stroke="'+COL.floor+'" stroke-width="2"/>';
+  }
+
+  /* ---------- API ---------- */
+  function render(d,t){
+    var j, body='';
+    if(d.view==='custom'){ return wrap(d.fn(t)); }
+    if(d.view==='front'){
+      var p=mix(d.A,d.B,t); j=solveFront(p);
+      (d.items||[]).forEach(function(it){ if(it.z==='b') body+=item(it,j); });
+      body+=figureFront(j);
+      (d.items||[]).forEach(function(it){ if(it.z!=='b') body+=item(it,j); });
+    } else {
+      var q=mix(d.A,d.B,t); j=solveSide(q);
+      (d.items||[]).forEach(function(it){ if(it.z==='b') body+=item(it,j); });
+      body+=figureSide(j);
+      (d.items||[]).forEach(function(it){ if(it.z!=='b') body+=item(it,j); });
+    }
+    return wrap(body);
+  }
+  function wrap(b){ return scene()+b; }
+  function svg(d,t){ return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" width="420" height="300"><rect width="420" height="300" fill="#2A2E31"/>'+render(d,t)+'</svg>'; }
+
+  return {render:render, svg:svg, G:G, COL:COL, P:P};
+})();
+if(typeof module!=='undefined') module.exports=GS;
+
+var DRAWS = (function(){
+  var G=272, F=G-5;
+  function pose(b,c){ var o={}; for(var k in b) o[k]=b[k]; for(var m in c) o[m]=c[m]; return o; }
+  var ST={root:['anN',210,F],T:90,aN:-90,fN:-90,tN:-90,sN:-90,xN:0};
+  var D={};
+
+  /* Sentadilla con barra */
+  var sqA=pose(ST,{T:88,aN:-100,fN:90});
+  D.back_squat={view:'side',A:sqA,B:pose(sqA,{T:52,tN:3,sN:-118}),
+    items:[{k:'post',x:120,y2:G-200,hook:G-140,hl:16,z:'b'},{k:'plate',at:['sho',-7,-4],r:13}]};
+
+  /* Hip thrust */
+  var htA={root:['anN',340,F],T:158,H:172,aN:-22,fN:-22,tN:33,sN:-92,xN:0};
+  D.hip_thrust={view:'side',A:htA,B:pose(htA,{T:186,H:172,tN:0,sN:-90,aN:6,fN:6}),
+    items:[{k:'bench',x:130,y:236,w:112,z:'b'},{k:'plate',at:['hip',2,-9],r:13}]};
+
+  /* Peso muerto rumano barra / mancuernas */
+  var rdA=pose(ST,{tN:-84,sN:-96});
+  var rdB=pose(rdA,{T:22,tN:-66,sN:-102,aN:-92,fN:-92});
+  D.rdl_barbell={view:'side',A:rdA,B:rdB,items:[{k:'plate',at:['hdN',0,0],r:13}]};
+  D.rdl_dumbbell={view:'side',A:rdA,B:rdB,items:[{k:'db',at:['hdN',0,0],r:9}]};
+
+  /* Abducción de cadera con banda (frontal) */
+  var abA={root:[210,F],spread:0,oL:3,kL:3,oR:3,kR:3,sL:6,eL:6,sR:6,eR:6};
+  D.hip_abduction_band={view:'front',A:abA,B:pose(abA,{oR:26,kR:26}),
+    items:[{k:'band',a:['anL',0,-12],b:['anR',0,-12],sag:6}]};
+
+  /* Dead bug */
+  var dbA={root:['hip',215,G-12],T:181,H:180,aN:90,fN:90,tN:90,sN:0,xN:90};
+  D.dead_bug={view:'side',A:dbA,B:pose(dbA,{aF:162,fF:168,tN:6,sN:6,xN:90,tF:90,sF:0,xF:90}),
+    items:[]};
+
+  /* Dominada asistida / negativa */
+  var puA={root:['wrN',210,62],T:92,aN:90,fN:90,tN:-92,sN:-150,xN:-100};
+  var puB=pose(puA,{aN:-30,fN:90,T:98,tN:-95,sN:-150});
+  D.assisted_pullup={view:'side',A:puA,B:puB,
+    items:[{k:'post',x:300,y2:50,z:'b'},{k:'pbar',at:[210,60],z:'b'},{k:'band',a:[210,66],b:['knN',0,0],sag:4}]};
+  D.negative_pullup={view:'side',A:puB,B:puA,tempo:[0.8,3.6],
+    items:[{k:'post',x:300,y2:50,z:'b'},{k:'pbar',at:[210,60],z:'b'},{k:'band',a:[210,66],b:['knN',0,0],sag:4}]};
+
+  /* Remo con barra */
+  var brA={root:['anN',210,F],T:38,aN:-90,fN:-90,tN:-70,sN:-104,xN:0};
+  D.bent_over_row={view:'side',A:brA,B:pose(brA,{aN:-172,fN:-98}),items:[{k:'plate',at:['hdN',0,0],r:13}]};
+
+  /* Remo unilateral con mancuerna (apoyo en banco) */
+  var srA={root:['hip',150,183],T:12,aN:-90,fN:-90,aF:-90,fF:-90,tN:-80,sN:-95,xN:0,tF:-90,sF:178,xF:180};
+  D.single_arm_row={view:'side',A:srA,B:pose(srA,{aN:-165,fN:-90}),
+    items:[{k:'bench',x:90,y:234,w:140,z:'b'},{k:'db',at:['hdN',0,0],r:9}]};
+
+  /* Face pull con banda */
+  var fpA={root:['anN',170,F],T:90,aN:4,fN:4,tN:-90,sN:-90,xN:0};
+  D.face_pull={view:'side',A:fpA,B:pose(fpA,{aN:20,fN:80,uaS:0.4}),
+    items:[{k:'post',x:350,y2:G-210,z:'b'},{k:'band',a:[350,100],b:['hdN',0,0],sag:3}]};
+
+  /* Pallof press (vista cenital) */
+  D.pallof_press={view:'custom',fn:function(t){
+    var hy=150-(150-92)*t, s='';
+    s+='<rect x="28" y="130" width="14" height="60" rx="3" fill="'+GS.COL.post+'"/>';
+    s+='<ellipse cx="205" cy="215" rx="14" ry="8" fill="'+GS.COL.far+'"/><ellipse cx="235" cy="215" rx="14" ry="8" fill="'+GS.COL.far+'"/>';
+    s+='<ellipse cx="220" cy="172" rx="34" ry="14" fill="'+GS.COL.near+'" stroke="'+GS.COL.out+'" stroke-width="3"/>';
+    s+='<circle cx="220" cy="168" r="11" fill="'+GS.COL.near+'" stroke="'+GS.COL.out+'" stroke-width="3"/>';
+    s+='<line x1="196" y1="168" x2="'+(215)+'" y2="'+hy+'" stroke="'+GS.COL.out+'" stroke-width="9" stroke-linecap="round"/><line x1="196" y1="168" x2="215" y2="'+hy+'" stroke="'+GS.COL.near+'" stroke-width="6" stroke-linecap="round"/>';
+    s+='<line x1="244" y1="168" x2="225" y2="'+hy+'" stroke="'+GS.COL.out+'" stroke-width="9" stroke-linecap="round"/><line x1="244" y1="168" x2="225" y2="'+hy+'" stroke="'+GS.COL.near+'" stroke-width="6" stroke-linecap="round"/>';
+    s+='<path d="M35 160 Q125 '+(160+10*(1-t)+4)+' 220 '+hy+'" fill="none" stroke="'+GS.COL.band+'" stroke-width="3"/>';
+    s+='<path d="M120 120 l-26 0 m6 -6 l-6 6 l6 6" fill="none" stroke="'+GS.COL.brass+'" stroke-width="2"/>';
+    return s; }};
+
+  /* Sentadilla búlgara */
+  var bgA={root:['anN',262,F],T:88,aN:-90,fN:-90,tN:-88,sN:-96,xN:0,tF:-144,sF:-148,xF:-20};
+  D.bulgarian_split_squat={view:'side',A:bgA,B:pose(bgA,{T:85,sN:-115,tN:-10,tF:-100,sF:136,xF:-30}),
+    items:[{k:'bench',x:138,y:233,w:60,z:'b'},{k:'db',at:['hdN',0,0],r:8}]};
+
+  /* Step-up */
+  var suA={root:['anN',275,226],T:84,aN:-90,fN:-90,tN:-12,sN:-108,xN:0,tF:-92,sF:-90,xF:0};
+  D.step_up={view:'side',A:pose(suA,{}),B:{root:['anN',275,226],T:90,aN:-90,fN:-90,tN:-90,sN:-90,xN:0,tF:-25,sF:-100,xF:0},
+    items:[{k:'bench',x:230,y:231,w:120,z:'b'},{k:'db',at:['hdN',0,0],r:8}]};
+
+  /* Plancha lateral */
+  var spA={root:['elN',120,F],T:164,H:164,aN:-90,fN:0,aF:90,fF:90,tN:-14,sN:-14,xN:-90};
+  D.side_plank={view:'side',A:pose(spA,{T:152,H:152,tN:4,sN:-4}),B:pose(spA,{T:170,H:170,tN:-11,sN:-11}),items:[]};
+
+  /* Bird dog */
+  var bdA={root:['hip',160,219],T:12,aN:-90,fN:-90,tN:-90,sN:180,xN:180};
+  D.bird_dog={view:'side',A:bdA,B:pose(bdA,{aF:5,fF:5,tF:180,sF:180,xF:180}),items:[]};
+
+  /* Press banca con mancuernas (plano) */
+  var pbA={root:['hip',215,226],T:180,H:180,aN:90,fN:90,tN:-5,sN:-60,xN:0};
+  D.db_bench_press={view:'side',A:pbA,B:pose(pbA,{aN:-70,fN:90}),
+    items:[{k:'bench',x:105,y:236,w:150,z:'b'},{k:'db',at:['hdN',0,0],r:9}]};
+
+  /* Press banca con barra */
+  D.barbell_bench_press={view:'side',A:pbA,B:pose(pbA,{aN:-55,fN:90}),
+    items:[{k:'bench',x:105,y:236,w:150,z:'b'},{k:'post',x:95,y2:G-150,hook:G-125,hl:14,z:'b'},{k:'plate',at:['hdN',0,0],r:13}]};
+
+  /* Press inclinado con mancuernas */
+  var inA={root:['hip',215,226],T:135,H:135,aN:90,fN:90,tN:-5,sN:-60,xN:0};
+  D.incline_db_press={view:'side',A:inA,B:pose(inA,{aN:-110,fN:90}),
+    items:[{k:'incline',x:208,y:236,ang:45,len:100,w:50,z:'b'},{k:'db',at:['hdN',0,0],r:9}]};
+
+  /* Elevaciones laterales (frontal) */
+  var lrA={root:[210,F],oL:3,kL:3,oR:3,kR:3,sL:8,eL:8,sR:8,eR:8};
+  D.lateral_raise={view:'front',A:lrA,B:pose(lrA,{sL:86,eL:70,sR:86,eR:70}),
+    items:[{k:'dbF',at:['wrL',0,0]},{k:'dbF',at:['wrR',0,0]}]};
+
+  /* Curl de bíceps */
+  var cuA=pose(ST,{});
+  D.biceps_curl={view:'side',A:cuA,B:pose(cuA,{aN:-84,fN:68}),items:[{k:'db',at:['hdN',0,0],r:8}]};
+
+  /* Gemelos */
+  var caA={root:['toN',262,G-17],T:90,aN:-90,fN:-90,tN:-90,sN:-90,xN:12,xF:12};
+  D.calf_raise={view:'side',A:pose(caA,{}),B:pose(caA,{xN:-52,xF:-52}),
+    items:[{k:'box',x:238,y:G-12,w:78,h:12,z:'b'},{k:'post',x:340,y2:G-180,z:'b'}]};
+
+  /* Jalón con banda (de rodillas) */
+  var jlA={root:['hip',215,219],T:90,aN:82,fN:82,tN:-90,sN:180,xN:180};
+  D.band_lat_pulldown={view:'side',A:jlA,B:pose(jlA,{aN:-92,fN:62}),
+    items:[{k:'post',x:290,y2:50,z:'b'},{k:'pbar',at:[290,56],z:'b'},{k:'band',a:[290,60],b:['hdN',0,0],sag:0}]};
+
+  /* Extensión de tríceps con banda */
+  var trA=pose(ST,{T:86,aN:-88,fN:52});
+  D.triceps_pressdown={view:'side',A:trA,B:pose(trA,{fN:-86}),
+    items:[{k:'post',x:300,y2:50,z:'b'},{k:'pbar',at:[300,56],z:'b'},{k:'band',a:[300,60],b:['hdN',0,0],sag:0}]};
+
+  return D;
+})();
+if(typeof module!=='undefined') module.exports=DRAWS;
+
+/* Biblioteca de técnica. Cada ejercicio de un plan apunta a una entrada de aquí con "tech".
+   load: kg = barra (kg totales) · db = por mancuerna · band = kg nominales de banda · none = peso corporal */
+var LK = {
+  ace:  function(u,l){ return {u:u, l:l||'ACE Fitness', t:'Guía ilustrada'}; },
+  nasm: function(u,l){ return {u:u, l:l||'NASM', t:'Guía con vídeo'}; },
+  phys: function(u,l){ return {u:u, l:l||'Physitrack', t:'Vídeo de fisioterapia'}; }
+};
+var TECH = {
+  back_squat:{ load:'kg', name:'Sentadilla con barra',
+    equip:'Rack con la barra a media altura del pecho · discos con cierres · pad de sentadilla (opcional)',
+    start:'De pie, barra sobre la parte alta de la espalda (no sobre el cuello), pies a la anchura de los hombros, pecho alto.',
+    end:'Cadera y rodillas flexionadas a una profundidad que controles, talones en el suelo, espalda recta con el tronco inclinado.',
+    steps:['Coloca la barra en el rack a media altura del pecho. Métete debajo y apóyala sobre los trapecios, nunca sobre el cuello. Agárrala algo más ancho que los hombros.','Sácala del rack con las piernas, da dos pasos atrás y separa los pies a la anchura de los hombros, con las puntas algo hacia fuera.','Inspira, aprieta el abdomen y baja flexionando a la vez cadera y rodillas, con las rodillas siguiendo la dirección de los pies.','Baja hasta donde mantengas la espalda recta y los talones apoyados.','Sube empujando el suelo con todo el pie. Exhala al pasar el tramo más duro.'],
+    mistakes:['Rodillas que se van hacia dentro al subir.','Despegar los talones o redondear la zona lumbar al final de la bajada: baja menos.','Colocar la barra sobre el cuello en lugar de sobre los trapecios.','Hacer la serie sin topes de seguridad: si tu rack los tiene, ajústalos justo por debajo de tu punto más bajo.'],
+    safety:'Pon los cierres en los discos y deja siempre 2-3 repeticiones en reserva.',
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/11/back-squat/','ACE Fitness · Back Squat'),
+           {u:'https://educ.jmu.edu/~strength/CSCCA/CSCCa_ex_tech_Squat.htm', l:'CSCCa · técnica de sentadilla', t:'Vídeos de entrenadores de fuerza'}]},
+
+  hip_thrust:{ load:'kg', name:'Hip thrust con barra',
+    equip:'Banco plano fijo contra la pared · barra con discos y cierres · pad de sentadilla sobre la cadera (opcional)',
+    start:'Parte baja de los omóplatos en el borde del banco, pies planos, barra sobre la cadera, barbilla hacia el pecho.',
+    end:'Cadera arriba hasta que hombros, cadera y rodillas quedan en línea; espinillas verticales; glúteos apretados; costillas abajo.',
+    steps:['Siéntate en el suelo con la parte baja de los omóplatos contra el borde del banco. El banco debe estar fijo contra una pared para que no se deslice.','Rueda la barra sobre la cadera (con el pad si quieres) y sujétala con las manos.','Pies a la anchura de la cadera y rodillas flexionadas. Mantén la barbilla hacia el pecho durante todo el movimiento.','Empuja con los talones y sube la cadera hasta que el cuerpo quede recto y las espinillas verticales.','Aprieta los glúteos 1 s arriba y baja de forma controlada, sin dejar caer la barra.'],
+    mistakes:['Arquear la zona lumbar para subir más: lleva las costillas hacia abajo y para cuando el cuerpo esté en línea.','Empujar con las puntas de los pies: los talones deben quedar en el suelo.','Echar la cabeza hacia atrás.','Pies demasiado cerca o demasiado lejos: ajusta hasta que las espinillas queden verticales arriba.'],
+    safety:'Asegura el banco contra la pared antes de cargar la barra.',
+    links:[LK.ace('https://www.acefitness.org/continuing-education/certified/november-2019/7403/understanding-the-barbell-hip-thrust/','ACE Fitness · Barbell Hip Thrust'),
+           LK.phys('https://us.physitrack.com/home-exercise-video/hip-thrust-with-barbell','Physitrack · Hip thrust con barra')]},
+
+  rdl_barbell:{ load:'kg', name:'Peso muerto rumano',
+    equip:'Barra con discos y cierres, a la altura del muslo (desde el rack o levantada del suelo)',
+    start:'De pie con la barra pegada a los muslos, rodillas ligeramente flexionadas, hombros atrás.',
+    end:'Cadera atrás, espalda recta, barra deslizando por muslos y espinillas hasta donde mantengas la espalda neutra.',
+    steps:['Agarra la barra a la anchura de los hombros y ponte de pie con las rodillas ligeramente flexionadas.','Inspira, abdomen firme y escápulas atrás y abajo.','Lleva la cadera hacia atrás, como cerrando una puerta con el glúteo; el tronco se inclina porque la cadera retrocede.','Mantén la barra pegada a las piernas y la espalda neutra. Baja hasta sentir tensión en los isquios (normalmente por debajo de la rodilla).','Sube empujando la cadera hacia delante y aprieta los glúteos arriba. Exhala al subir.'],
+    mistakes:['Redondear la espalda para bajar más: baja solo hasta donde puedas mantenerla neutra.','Separar la barra de las piernas.','Convertirlo en una sentadilla flexionando mucho las rodillas.','Hiperextender la zona lumbar al terminar de subir.'],
+    safety:'Cierres en los discos. Si dudas de la espalda, usa menos carga y menos recorrido.',
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/romanian-deadlift-barbell','NASM · Romanian Deadlift (barra)')]},
+
+  rdl_dumbbell:{ load:'db', name:'Peso muerto rumano con mancuernas',
+    equip:'Dos mancuernas hechas con las barras cortas, discos y cierres (mismo peso en cada una)',
+    start:'De pie con una mancuerna en cada mano delante de los muslos, rodillas ligeramente flexionadas.',
+    end:'Cadera atrás, espalda recta, mancuernas pegadas a las piernas hasta mitad de espinilla.',
+    steps:['Con una mancuerna en cada mano, ponte de pie con las rodillas ligeramente flexionadas.','Inspira y firme el abdomen, hombros atrás.','Lleva la cadera hacia atrás y deja que las mancuernas bajen pegadas a las piernas.','Baja hasta notar tensión en los isquios sin redondear la espalda.','Sube empujando la cadera hacia delante y exhala.'],
+    mistakes:['Redondear la espalda.','Separar las mancuernas de las piernas.','Flexionar demasiado las rodillas.','Bajar más de lo que permite tu espalda neutra.'],
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/dumbbell-romanian-deadlift','NASM · Dumbbell Romanian Deadlift')]},
+
+  hip_abduction_band:{ load:'band', name:'Abducción de cadera con banda',
+    equip:'Banda de 10 o 20 kg alrededor de los tobillos (o sobre las rodillas) · una mano en el rack para el equilibrio',
+    start:'De pie, pies juntos, banda con ligera tensión, tronco recto.',
+    end:'Una pierna elevada hacia el lado unos 25-30°, rodilla y punta del pie mirando al frente.',
+    steps:['Coloca la banda por encima de los tobillos o sobre las rodillas. Apoya una mano en el rack si necesitas equilibrio.','Pelvis y tronco quietos, abdomen firme.','Lleva una pierna hacia el lado con la rodilla estirada y la punta del pie al frente, sin inclinar el tronco.','Pausa breve y vuelve despacio, controlando la banda.'],
+    mistakes:['Inclinar el tronco hacia el lado contrario para levantar más la pierna.','Girar la punta del pie hacia arriba: pierdes trabajo de glúteo.','Subir con impulso en lugar de control.','Banda tan dura que no puedes controlar la vuelta.'],
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/155/standing-hip-abduction/','ACE Fitness · Standing Hip Abduction')]},
+
+  dead_bug:{ load:'none', name:'Dead bug',
+    equip:'Tatami',
+    start:'Boca arriba, brazos al techo, caderas y rodillas a 90°, zona lumbar apoyada en el suelo.',
+    end:'Un brazo por encima de la cabeza y la pierna contraria estirada sin tocar el suelo; lumbar pegada.',
+    steps:['Túmbate sobre el tatami con los brazos hacia el techo y las rodillas a 90° sobre las caderas.','Aplana la zona lumbar contra el suelo y exhala para activar el abdomen.','Baja despacio un brazo por detrás de la cabeza y estira la pierna contraria hasta casi tocar el suelo.','Vuelve al centro y repite con el otro lado, siempre con la lumbar pegada.'],
+    mistakes:['Despegar la zona lumbar del suelo: reduce el recorrido.','Contener la respiración: exhala al estirar.','Moverte rápido, con impulso.','Estirar brazo y pierna del mismo lado.'],
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/dead-bug','NASM · Dead Bug')]},
+
+  assisted_pullup:{ load:'band', name:'Dominada asistida con banda',
+    equip:'Barra de dominadas del rack · banda de 10/20/30 kg atada a la barra y pasada bajo la rodilla o el pie',
+    start:'Colgado con agarre algo más ancho que los hombros, brazos casi estirados, hombros activos, rodillas flexionadas.',
+    end:'Barbilla por encima de la barra, codos hacia abajo, tronco firme.',
+    steps:['Ata la banda a la barra, pásala bajo una rodilla (o el pie) y agárrate con las palmas hacia delante.','Antes de subir, baja y junta los omóplatos para activar los hombros.','Tira de los codos hacia abajo y hacia las caderas hasta pasar la barbilla de la barra.','Baja controlando (2-3 s) hasta casi estirar los brazos, sin dejarte caer.','Elige la banda que permita hacer las repeticiones limpias que marca el plan.'],
+    mistakes:['Balancearte o dar patadas para subir.','Encoger los hombros hacia las orejas.','Bajar de golpe y estirar del todo sin control: sobrecarga hombro y codo.','Estirar el cuello para pasar la barbilla en lugar de subir el pecho.'],
+    safety:'Comprueba que la banda y el rack están firmes antes de colgarte.',
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/band-assisted-pull-up','NASM · Band Assisted Pull-Up')]},
+
+  negative_pullup:{ load:'band', name:'Negativa de dominada',
+    equip:'Barra de dominadas del rack · banco para subir hasta arriba · banda opcional',
+    start:'Arriba, con la barbilla sobre la barra (subes ayudándote del banco).',
+    end:'Abajo, con los brazos casi estirados tras bajar muy despacio (3-5 s).',
+    steps:['Sube a la posición superior ayudándote del banco, con la barbilla sobre la barra.','Quita la ayuda y baja lo más lento posible, 3-5 s, con el cuerpo quieto.','Cuando los brazos estén casi estirados, apóyate de nuevo en el banco y repite.'],
+    mistakes:['Dejarte caer en 1 s: pierde todo el sentido del ejercicio.','Soltarte al final y estirar de golpe los hombros.','Seguir repitiendo cuando ya no controlas la velocidad lenta.'],
+    safety:'No es una prueba máxima: para cuando la bajada deje de ser controlada.',
+    links:[LK.ace('https://www.acefitness.org/resources/pros/expert-articles/5565/4-moves-to-help-you-master-the-pull-up/','ACE Fitness · 4 Moves to Master the Pull-Up')]},
+
+  bent_over_row:{ load:'kg', name:'Remo con barra',
+    equip:'Barra con discos y cierres, partiendo del suelo o del rack a la altura de las rodillas',
+    start:'Tronco inclinado unos 45°, espalda recta, brazos colgando con la barra bajo los hombros, rodillas flexionadas.',
+    end:'Barra llevada al abdomen bajo, codos atrás y pegados, omóplatos juntos.',
+    steps:['Pies a la anchura de la cadera, rodillas flexionadas, cadera atrás y tronco inclinado unos 45° con la espalda neutra.','Agarra la barra algo más ancho que los hombros y déjala colgar bajo los hombros.','Tira de la barra hacia la parte baja del abdomen llevando los codos atrás y juntando los omóplatos.','Baja controlando hasta estirar los brazos, sin que el tronco se mueva. Exhala al tirar.'],
+    mistakes:['Incorporar el torso y dar tirones.','Redondear la espalda.','Tirar solo con los brazos, sin juntar los omóplatos.','Levantar la cabeza: mantén el cuello alineado con la espalda.'],
+    safety:'Si notas la zona lumbar cargada, reduce el peso o apoya la frente en una superficie.',
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/12/bent-over-row/','ACE Fitness · Bent-Over Row')]},
+
+  single_arm_row:{ load:'db', name:'Remo unilateral con mancuerna',
+    equip:'Banco plano · una mancuerna (barra corta con discos y cierres)',
+    start:'Rodilla y mano del mismo lado apoyadas en el banco, espalda plana, mancuerna colgando bajo el hombro.',
+    end:'Codo por encima de la espalda, mancuerna junto a la cadera, tronco y hombros quietos.',
+    steps:['Apoya una rodilla y la mano del mismo lado en el banco; el otro pie queda en el suelo. Espalda plana.','Deja colgar la mancuerna con el brazo estirado bajo el hombro.','Tira del codo hacia la cadera sin girar el tronco.','Baja controlando hasta estirar el brazo. Repite y cambia de lado.'],
+    mistakes:['Girar el tronco para subir más peso.','Tirar con el bíceps en vez de con el codo y la espalda.','Redondear la espalda.','Dejar caer la mancuerna.'],
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/126/single-arm-row/','ACE Fitness · Single Arm Row')]},
+
+  face_pull:{ load:'band', name:'Face pull con banda',
+    equip:'Banda de 10 o 20 kg atada al rack a la altura de la frente',
+    start:'De pie frente al anclaje, banda tensa, brazos estirados al frente.',
+    end:'Manos junto a la cara, codos altos y abiertos, hombros atrás.',
+    steps:['Ata la banda al rack a la altura de la frente y sujeta los extremos con las palmas hacia ti.','Da un paso atrás hasta que la banda tenga tensión y mantén el tronco recto y firme.','Tira hacia la cara abriendo los codos hacia fuera y arriba, separando las manos al final.','Pausa 1 s y vuelve despacio con los brazos estirados.'],
+    mistakes:['Arquear la zona lumbar y echarte hacia atrás.','Codos bajos (se convierte en un remo): súbelos a la altura de los hombros.','Encoger los hombros hacia las orejas.','Banda tan dura que no controlas el recorrido.'],
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/face-pull','NASM · Face Pull')]},
+
+  pallof_press:{ load:'band', name:'Pallof press',
+    equip:'Banda atada al rack a la altura del pecho, a tu lado (dibujo visto desde arriba)',
+    start:'De pie de lado al anclaje, manos al pecho, la banda tira de ti hacia el rack.',
+    end:'Brazos estirados al frente sin que el tronco gire hacia el anclaje.',
+    steps:['Ata la banda al rack a la altura del pecho y colócate de lado, pies a la anchura de los hombros.','Sujeta la banda con las dos manos en el centro del pecho.','Estira los brazos al frente despacio sin dejar que el tronco gire hacia el anclaje: resiste la rotación.','Pausa 1-2 s y vuelve al pecho. Cambia de lado.'],
+    mistakes:['Dejar que hombros y cadera giren hacia el anclaje.','Contener la respiración: respira con normalidad.','Inclinar el cuerpo para compensar.','Ponerte tan cerca del anclaje que la banda no tenga tensión.'],
+    links:[LK.phys('https://www.physitrack.com/exercise-library/how-to-perform-the-pallof-press-exercise','Physitrack · Pallof Press')]},
+
+  bulgarian_split_squat:{ load:'db', name:'Sentadilla búlgara / split squat',
+    equip:'Banco plano para apoyar el pie de atrás · mancuernas (barras cortas con discos) o peso corporal',
+    start:'Pie de atrás sobre el banco, pie delantero a un paso largo, tronco erguido.',
+    end:'Rodilla delantera a unos 90°, rodilla trasera cerca del suelo, tronco recto.',
+    steps:['Apoya el empeine del pie trasero en el banco y da un paso largo hacia delante con el otro pie.','Baja en vertical, no hacia delante, flexionando ambas rodillas hasta que la de atrás casi roce el suelo.','La rodilla delantera sigue la línea del pie, sin caer hacia dentro.','Empuja con el pie delantero para subir. Completa las repeticiones y cambia de lado.'],
+    mistakes:['Pie delantero demasiado cerca: la rodilla se adelanta mucho y se carga.','Inclinar el torso hacia delante.','Rodilla delantera hacia dentro.','Usar un peso con el que pierdes el equilibrio: baja la carga.'],
+    safety:'Si necesitas equilibrio, apoya una mano en el rack.',
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/bulgarian-split-squat','NASM · Bulgarian Split Squat')]},
+
+  step_up:{ load:'db', name:'Step-up',
+    equip:'Banco plano a una altura que deje la rodilla a ~90° con el pie encima · mancuernas opcionales',
+    start:'Un pie completo sobre el banco, el otro en el suelo, tronco erguido.',
+    end:'De pie sobre el banco con cadera y rodilla extendidas, la otra rodilla elevada.',
+    steps:['Coloca todo el pie sobre el banco, con la rodilla a unos 90° o menos.','Empuja con la pierna del banco, no con la de abajo, hasta ponerte de pie.','Sube la otra rodilla sin impulsarte y baja despacio, controlando.','Completa las repeticiones de un lado y cambia.'],
+    mistakes:['Impulsarte con la pierna de abajo.','Rodilla que cae hacia dentro al subir.','Banco demasiado alto, que te obliga a inclinar el cuerpo.','Bajar de golpe.'],
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/28/step-up/','ACE Fitness · Step-Up')]},
+
+  side_plank:{ load:'none', name:'Plancha lateral',
+    equip:'Tatami',
+    start:'De lado, apoyado en antebrazo y pie, cadera algo baja.',
+    end:'Cuerpo en línea recta de cabeza a pies, cadera arriba, hombro sobre el codo.',
+    steps:['Túmbate de lado con el codo justo bajo el hombro y los pies apilados.','Sube la cadera hasta que cabeza, cadera y pies formen una línea recta.','Mantén la posición respirando con normalidad, abdomen firme y hombro lejos de la oreja.','Baja con control y repite en el otro lado.'],
+    mistakes:['Cadera caída o girada hacia atrás.','Hombro hundido hacia el cuello.','Aguantar la respiración.','Seguir aguantando cuando ya se ha perdido la línea: termina la serie.'],
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/side-plank','NASM · Side Plank')]},
+
+  bird_dog:{ load:'none', name:'Bird dog',
+    equip:'Tatami',
+    start:'A cuatro apoyos, manos bajo los hombros y rodillas bajo las caderas, espalda neutra.',
+    end:'Brazo y pierna contrarios estirados en línea con el tronco, sin girar la cadera.',
+    steps:['Colócate a cuatro apoyos sobre el tatami con la espalda neutra.','Estira a la vez un brazo y la pierna contraria hasta alinearlos con el tronco, sin girar la cadera ni arquear la espalda.','Pausa 1-2 s y vuelve sin apoyar. Cambia de lado.'],
+    mistakes:['Arquear la zona lumbar al subir la pierna.','Girar la cadera hacia el lado.','Moverte rápido o con balanceo.','Levantar la cabeza: mantén el cuello alineado.'],
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/bird-dog','NASM · Bird Dog')]},
+
+  db_bench_press:{ load:'db', name:'Press de banca con mancuernas',
+    equip:'Banco plano · dos mancuernas (barras cortas con discos y cierres)',
+    start:'Tumbado, mancuernas sobre el pecho con los brazos estirados, omóplatos juntos.',
+    end:'Codos a unos 45-75° del cuerpo, mancuernas a la altura del pecho, antebrazos verticales.',
+    steps:['Siéntate con las mancuernas sobre los muslos, túmbate llevándolas al pecho y junta los omóplatos.','Pies firmes en el suelo, glúteos y espalda alta apoyados en el banco.','Baja despacio con los codos a unos 45-75° del cuerpo hasta notar estiramiento en el pecho.','Empuja hacia arriba sin chocar las mancuernas ni bloquear los codos de golpe.'],
+    mistakes:['Abrir los codos a 90°: carga el hombro.','Arquear mucho la lumbar o despegar los glúteos.','Bajar tanto que pierdes el control del hombro.','Usar un peso que no puedes dejar con seguridad sin ayuda.'],
+    safety:'Para soltar las mancuernas, bájalas hacia los muslos y siéntate; no las dejes caer.',
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/19/chest-press/','ACE Fitness · Dumbbell Chest Press')]},
+
+  barbell_bench_press:{ load:'kg', name:'Press banca con barra',
+    equip:'Banco plano en el rack con la barra a la altura de los ojos · cierres en los discos',
+    start:'Tumbado con los ojos bajo la barra, omóplatos juntos, pies firmes, brazos estirados.',
+    end:'La barra roza la parte baja del pecho, antebrazos verticales, codos a unos 45-75°.',
+    steps:['Túmbate con los ojos bajo la barra, omóplatos atrás y abajo, pies firmes y glúteos en el banco.','Agarre algo más ancho que los hombros, con los pulgares rodeando la barra.','Saca la barra y bájala controlada hasta rozar la parte baja del pecho.','Empuja hacia arriba y ligeramente hacia atrás hasta estirar los brazos. Exhala al empujar.'],
+    mistakes:['Rebotar la barra en el pecho.','Abrir los codos a 90°.','Agarre sin el pulgar rodeando la barra.','Levantar los glúteos o la cabeza del banco.'],
+    safety:'Sin ayudante es el ejercicio más delicado del plan: usa topes de seguridad del rack o pide ayuda, no vayas al fallo (deja 2-3 repeticiones en reserva) y pon los cierres.',
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/barbell-bench-press','NASM · Barbell Bench Press')]},
+
+  incline_db_press:{ load:'db', name:'Press inclinado con mancuernas',
+    equip:'Banco inclinable a unos 30-45° · mancuernas (barras cortas con discos y cierres)',
+    start:'Reclinado en el banco, mancuernas sobre el pecho alto con los brazos estirados.',
+    end:'Mancuernas a la altura del pecho, codos a unos 45-75° del cuerpo.',
+    steps:['Ajusta el banco a unos 30-45° y siéntate con las mancuernas sobre los muslos.','Reclínate llevando las mancuernas al pecho, omóplatos juntos y pies firmes.','Baja despacio con los codos a unos 45-75° del cuerpo.','Empuja hacia arriba sin bloquear los codos de golpe.'],
+    mistakes:['Inclinación excesiva (más de 45°): carga el hombro.','Abrir los codos a 90°.','Arquear la zona lumbar.','Peso que no puedes dejar con seguridad.'],
+    links:[LK.nasm('https://www.nasm.org/resource-center/exercise-library/two-arm-incline-dumbbell-chest-press','NASM · Two-Arm Incline Dumbbell Chest Press')]},
+
+  lateral_raise:{ load:'db', name:'Elevaciones laterales',
+    equip:'Dos mancuernas ligeras (barras cortas con discos pequeños)',
+    start:'De pie, mancuernas a los lados, codos ligeramente flexionados.',
+    end:'Brazos elevados hasta la altura de los hombros, sin pasarlos.',
+    steps:['De pie, tronco recto y abdomen firme, mancuernas junto a los muslos.','Eleva los brazos hacia los lados, con una ligera flexión de codos, hasta la altura de los hombros.','Baja despacio, en 2-3 s.'],
+    mistakes:['Balancear el tronco para subir: el peso es demasiado alto.','Subir por encima de los hombros encogiendo los trapecios.','Muñecas por encima de los codos.','Bajar de golpe.'],
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/26/lateral-raise/','ACE Fitness · Lateral Raise')]},
+
+  biceps_curl:{ load:'db', name:'Curl de bíceps',
+    equip:'Mancuernas (barras cortas con discos y cierres) o barra recta con discos',
+    start:'De pie, brazos estirados junto al cuerpo, codos pegados al tronco.',
+    end:'Codos pegados, antebrazos subidos en flexión completa, sin balanceo.',
+    steps:['De pie con el abdomen firme y los codos pegados a los costados.','Sube la carga flexionando solo el codo, sin adelantar los hombros.','Aprieta arriba un instante y baja despacio hasta casi estirar el brazo.'],
+    mistakes:['Balancear cadera o espalda para subir el peso.','Adelantar los codos al subir.','Bajar rápido sin control.','Doblar las muñecas: mantenlas rectas.'],
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/70/bicep-curl/','ACE Fitness · Bicep Curl')]},
+
+  calf_raise:{ load:'db', name:'Elevación de gemelos',
+    equip:'Borde de un escalón o de un banco (opcional) · una mano en el rack para el equilibrio · mancuernas opcionales',
+    start:'De pie sobre el antepié, talones abajo y piernas estiradas.',
+    end:'Talones lo más arriba posible apoyando en la base del dedo gordo; pausa de 1 s.',
+    steps:['Apoya el antepié (en el borde de un escalón si quieres más recorrido) y agárrate al rack.','Sube lo más alto que puedas sobre la punta de los pies, sin doblar las rodillas y con los tobillos rectos.','Pausa 1 s arriba y baja despacio hasta estirar bien la pantorrilla.'],
+    mistakes:['Rebotar con impulso.','Tobillos que se van hacia dentro o hacia fuera.','Recorrido corto: sube y baja del todo.','Doblar las rodillas para ayudarte.'],
+    links:[LK.phys('https://www.physitrack.com/exercise-library/how-to-perform-the-calf-raises-exercise','Physitrack · Calf Raises'),
+           LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/294/calf-raise/','ACE Fitness · Calf Raise')]},
+
+  band_lat_pulldown:{ load:'band', name:'Jalón con banda',
+    equip:'Banda atada a la barra de dominadas del rack · tatami para las rodillas',
+    start:'De rodillas, tronco recto, brazos estirados hacia arriba con la banda tensa.',
+    end:'Codos hacia las costillas, manos a la altura del pecho, omóplatos abajo.',
+    steps:['Ata la banda a la barra de dominadas, arrodíllate sobre el tatami y sujeta la banda con los brazos estirados.','Tira de los codos hacia las costillas bajando las manos al pecho, sin encorvarte.','Pausa 1 s abajo y sube despacio hasta estirar los brazos.'],
+    mistakes:['Echarte hacia atrás para tirar.','Tirar solo con los brazos sin bajar los omóplatos.','Soltar la banda de golpe al subir.','Banda tan dura que te obliga a inclinarte.'],
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/35/kneeling-lat-pulldown/','ACE Fitness · Kneeling Lat Pulldown')]},
+
+  triceps_pressdown:{ load:'band', name:'Extensión de tríceps con banda',
+    equip:'Banda atada a la barra de dominadas del rack',
+    start:'De pie, codos pegados al cuerpo y flexionados, manos junto al pecho.',
+    end:'Brazos estirados hacia abajo, codos pegados al cuerpo, muñecas rectas.',
+    steps:['De pie, ligera inclinación del tronco, codos pegados a los costados.','Estira los codos hacia abajo hasta extender los brazos sin mover los codos.','Vuelve despacio hasta que las manos lleguen al pecho.'],
+    mistakes:['Abrir o adelantar los codos: deja de ser un ejercicio de tríceps.','Inclinarte hacia delante para empujar con el peso del cuerpo.','Soltar la banda de golpe.','Bloquear los codos con un tirón al final.'],
+    links:[LK.ace('https://www.acefitness.org/resources/everyone/exercise-library/333/tricep-pressdown/','ACE Fitness · Tricep Pressdown')]}
+};
+
+/* ---------- Planes ----------
+   Cada ejercicio apunta a la biblioteca de técnica con "tech".
+   Para añadir un plan nuevo: crear el objeto y ponerlo el PRIMERO de la lista de su perfil. */
+function X(id,name,sets,reps,rest,tech){ return {id:id,name:name,sets:sets,reps:reps,rest:rest,tech:tech}; }
+
+var PLAN_TINO_V2_1 = {
+  label:'Fuerza en casa · superior/inferior + dominadas (v2.1, 28/09/2026)',
+  goals:['Recuperar fuerza general con progresión de carga y técnica','Aumentar/recuperar masa muscular sin perseguir el fallo','Primera dominada estricta, reduciendo la asistencia poco a poco','Capacidad física general: fuerza + actividad aeróbica + menos sedentarismo','Longevidad funcional: piernas, tracción, empuje, bisagra y estabilidad'],
+  progression:'Doble progresión: cuando todas las series lleguen al extremo alto del rango con técnica estable y el RIR previsto, sube ligeramente la carga y vuelve al extremo bajo. RIR 2-3 en principales y 1-2 en accesorios; no se entrena al fallo. Descansos autorregulados: en principales empieza sobre 90 s (suma 30-60 s si la siguiente serie se ve claramente perjudicada), en accesorios sobre 60 s y en core 30-60 s. Los tiempos del temporizador son un punto de partida.',
+  cardio:'Caminar de forma progresiva: semanas 1-2 → 3×20-30 min; semanas 3-4 → 3-4×25-35 min; semanas 5-8 → 4×30-40 min, acercándote a ≥150 min/semana si recuperas bien.',
+  safety:'Mientras no haya una serie fiable de presión arterial domiciliaria: sin 1RM, sin repeticiones forzadas y sin series al fallo. Evita las apneas y la maniobra de Valsalva: respira de forma controlada. Detén la sesión ante dolor o presión en el pecho, falta de aire desproporcionada, mareo importante, desmayo o palpitaciones con malestar.',
+  days:[
+    {id:'miercoles',label:'Miércoles',focus:'Superior A + dominadas. Tracción vertical + empuje + remo.',exercises:[
+      X('mi1','Dominada asistida',3,'4-6',105,'assisted_pullup'),
+      X('mi2','Press banca con barra',3,'6-8',105,'barbell_bench_press'),
+      X('mi3','Remo con barra',3,'6-8',105,'bent_over_row'),
+      X('mi4','Press inclinado con mancuernas',2,'8-12',75,'incline_db_press'),
+      X('mi5','Curl bíceps',2,'8-12',60,'biceps_curl'),
+      X('mi6','Face pull con banda',2,'12-15',60,'face_pull')]},
+    {id:'viernes',label:'Viernes',focus:'Inferior A. Sentadilla + bisagra + glúteo.',exercises:[
+      X('vi1','Sentadilla con barra',3,'5-8',120,'back_squat'),
+      X('vi2','Peso muerto rumano',3,'6-8',120,'rdl_barbell'),
+      X('vi3','Hip thrust con barra',3,'8-10',105,'hip_thrust'),
+      X('vi4','Split squat / búlgaras',2,'8-10 por lado',75,'bulgarian_split_squat'),
+      X('vi5','Gemelos',2,'10-15',60,'calf_raise'),
+      X('vi6','Dead bug',2,'8 por lado',45,'dead_bug')]},
+    {id:'sabado',label:'Sábado',focus:'Superior B + dominadas. Segunda práctica de dominada + volumen superior.',exercises:[
+      X('sa1','Dominada asistida',3,'5-8',105,'assisted_pullup'),
+      X('sa2','Press banca / variante',3,'8-10',105,'barbell_bench_press'),
+      X('sa3','Remo unilateral',3,'8-12 por lado',75,'single_arm_row'),
+      X('sa4','Jalón con banda',2,'10-15',60,'band_lat_pulldown'),
+      X('sa5','Curl bíceps',2,'10-15',60,'biceps_curl'),
+      X('sa6','Extensión tríceps',2,'10-15',60,'triceps_pressdown'),
+      X('sa7','Pallof press',2,'8-12 por lado',45,'pallof_press')]},
+    {id:'domingo',label:'Domingo',focus:'Inferior B + core. Pierna/glúteo + estabilidad.',exercises:[
+      X('do1','Variante de sentadilla más ligera',3,'8-10',120,'back_squat'),
+      X('do2','Hip thrust',3,'10-12',105,'hip_thrust'),
+      X('do3','RDL barra/mancuernas',2,'8-12',120,'rdl_barbell'),
+      X('do4','Step-up / split squat',2,'8-12 por lado',75,'step_up'),
+      X('do5','Gemelos',2,'12-15',60,'calf_raise'),
+      X('do6','Plancha lateral',2,'20-40 seg por lado',45,'side_plank'),
+      X('do7','Bird dog',2,'6-8 por lado',45,'bird_dog')]}
+  ]
+};
+
+var PLAN_CRIS_V1_2 = {
+  label:'Fuerza · glúteos · core · progresión a dominadas (v1.2, 08/09/2026)',
+  goals:['Ganar fuerza y masa en glúteos y piernas (3 exposiciones semanales)','Mejorar la estabilidad del core: anti-extensión, antirrotación y estabilidad lateral','Progresar desde cero hasta la primera dominada estricta','Aprender bien los patrones de sentadilla, bisagra de cadera, empuje y tracción','Mantener peso y composición corporal: no es un plan de pérdida de peso'],
+  progression:'Doble progresión: primero sube repeticiones dentro del rango; cuando completes el rango alto en todas las series con buena técnica, sube ligeramente el peso y vuelve a la parte baja. Respeta el RIR de cada ejercicio y no busques el fallo. En dominada asistida, reduce la banda solo cuando 4×4-6 salga sólido, no por calendario. Calidad antes que carga: si la técnica se deteriora, no se avanza.',
+  cardio:'Sin cardio adicional como herramienta de pérdida de peso: el objetivo es rendimiento.',
+  safety:'Vigila en cualquier sesión: aumento del abombamiento, sensación de peso o presión pélvica, pérdida de orina durante o después de entrenar, o dolor pélvico/perineal. Si aparece alguno, reduce esa sesión y coméntalo; no fuerces la progresión. Respira de forma controlada y evita convertir cada repetición en una maniobra de máxima presión.',
+  days:[
+    {id:'lunes',label:'Lunes',focus:'Glúteos + piernas + core. Calentamiento 6-8 min antes de empezar. RIR objetivo 2-3.',exercises:[
+      X('lu1','Hip thrust con barra',4,'8-10',105,'hip_thrust'),
+      X('lu2','Sentadilla con barra',3,'8-10',90,'back_squat'),
+      X('lu3','Peso muerto rumano',3,'8-10',90,'rdl_barbell'),
+      X('lu4','Abducción con banda',3,'15-20',45,'hip_abduction_band'),
+      X('lu5','Dead bug',3,'6-8 por lado',38,'dead_bug')]},
+    {id:'martes',label:'Martes',focus:'Espalda + dominadas + core. Calentamiento de hombro 6-8 min. Cierra con 3-5 min de respiración/coordinación pélvica, sin dolor ni presión.',exercises:[
+      X('ma1','Dominada asistida',4,'4-6',90,'assisted_pullup'),
+      X('ma2','Remo con barra',3,'8-10',90,'bent_over_row'),
+      X('ma3','Negativa de dominada',3,'2-3',90,'negative_pullup'),
+      X('ma4','Remo unilateral',3,'10 por lado',60,'single_arm_row'),
+      X('ma5','Face pull con banda',3,'12-15',45,'face_pull'),
+      X('ma6','Pallof press',3,'8-10 por lado',38,'pallof_press')]},
+    {id:'jueves',label:'Jueves',focus:'Glúteos + piernas. Calentamiento 6-8 min. Segunda sesión de tren inferior: volumen suficiente sin llevar cada serie al esfuerzo máximo.',exercises:[
+      X('ju1','Hip thrust con barra',3,'10-12',90,'hip_thrust'),
+      X('ju2','Sentadilla búlgara',3,'8-10 por lado',83,'bulgarian_split_squat'),
+      X('ju3','Peso muerto rumano con mancuernas',3,'10-12',83,'rdl_dumbbell'),
+      X('ju4','Step-up',3,'8-10 por lado',68,'step_up'),
+      X('ju5','Abducción con banda',3,'15-20',45,'hip_abduction_band'),
+      X('ju6','Side plank',3,'20-30 seg por lado',38,'side_plank'),
+      X('ju7','Bird dog',2,'8 por lado',30,'bird_dog')]},
+    {id:'sabado',label:'Sábado',focus:'Dominadas + tren superior + exposición extra de glúteo y core.',exercises:[
+      X('sa1','Dominada asistida',4,'4-6',90,'assisted_pullup'),
+      X('sa2','Remo con barra',3,'8-10',90,'bent_over_row'),
+      X('sa3','Press de banca con mancuernas',3,'8-12',83,'db_bench_press'),
+      X('sa4','Hip thrust con barra',3,'12-15',83,'hip_thrust'),
+      X('sa5','Elevaciones laterales',2,'12-15',45,'lateral_raise'),
+      X('sa6','Dead bug',3,'6-8 por lado',38,'dead_bug'),
+      X('sa7','Pallof press',2,'10 por lado',38,'pallof_press')]}
+  ]
+};
+
+/* Más reciente primero. Los planes antiguos se quedan debajo por si se quiere recuperar uno. */
+var PLANS = {
+  p1:[{id:'tino-v2-1',name:'Plan 1 · Fuerza en casa (v2.1)',plan:PLAN_TINO_V2_1}],
+  p2:[{id:'cris-v1-2',name:'Plan 1 · Fuerza, glúteos y dominadas (v1.2)',plan:PLAN_CRIS_V1_2}]
+};
+
+/* ---------- Perfiles y estado ---------- */
+var PROFILES = [ {id:'p1',name:'Tino'}, {id:'p2',name:'Cris'} ];
+var ACTIVE_KEY = 'gymstudio:active';
+var activeProfileId = null, activePlanId = null, plan = null, sessionLog = [], currentDay = null;
+var LOADS = { kg:{step:2.5,unit:'kg'}, db:{step:2.5,unit:'kg/mancuerna'}, band:{step:10,unit:'kg de banda'} };
+var WEEKDAYS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+var $ = function(id){ return document.getElementById(id); };
+
+function historyKey(pid,planId){ return 'gymstudio:'+pid+':'+planId+':history'; }
+function activePlanKey(pid){ return 'gymstudio:'+pid+':activePlan'; }
+function todayStr(){ var d=new Date(); return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+function weekdayName(s){ var n=WEEKDAYS[new Date(s+'T00:00:00').getDay()]; return n.charAt(0).toUpperCase()+n.slice(1); }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function loadOf(ex){ var t=TECH[ex.tech]; return t ? t.load : 'kg'; }
+
+function normalizePlan(p){
+  var used={};
+  p.days.forEach(function(day,di){
+    if(!day.id) day.id='d'+di;
+    day.exercises.forEach(function(ex,ei){
+      if(!ex.id||used[ex.id]) ex.id=day.id+'x'+ei;
+      used[ex.id]=1; ex.sets=Number(ex.sets)||1;
     });
-    row.appendChild(btn);
   });
+  return p;
 }
 
-function renderPlanSelect(){
-  const sel = document.getElementById('plan-select');
-  const list = PLANS[activeProfileId] || [];
-  sel.innerHTML = list.map(p=>`<option value="${p.id}"${p.id===activePlanId?' selected':''}>${p.name}</option>`).join('');
-}
-
-function loadProfileData(){
-  const list = PLANS[activeProfileId] || [];
-  let chosen = null;
-  try{ chosen = localStorage.getItem(activePlanKey(activeProfileId)); }catch(e){}
-  const entry = list.find(p=>p.id===chosen) || list[0];
-  if(!entry){
-    plan = { label:'Sin plan', days:[] };
-    activePlanId = null;
-    history = [];
-  } else {
-    activePlanId = entry.id;
-    plan = normalizePlan(JSON.parse(JSON.stringify(entry.plan)));
-    try{
-      const raw = localStorage.getItem(historyKey(activeProfileId, activePlanId));
-      history = raw ? JSON.parse(raw) : [];
-    }catch(e){ history = []; }
-  }
-  currentDay = suggestNextDayId();
-  renderPlanSelect();
-  renderDayTabs();
-  renderExercises();
-  renderHistory();
-  renderDayStatus();
-}
-
-document.getElementById('plan-select').addEventListener('change', (e)=>{
-  try{ localStorage.setItem(activePlanKey(activeProfileId), e.target.value); }catch(err){}
-  loadProfileData();
-});
-
-async function saveHistory(){
-  if(!activePlanId) return;
-  try{ localStorage.setItem(historyKey(activeProfileId, activePlanId), JSON.stringify(history)); }catch(e){}
-}
-
-
-/* ---------- Vista de plan ---------- */
-function lastWeightFor(exId){
-  for(let i=history.length-1;i>=0;i--){
-    const entry = history[i].exercises.find(e=>e.id===exId);
-    if(entry && entry.weight) return entry.weight;
-  }
-  return null;
-}
-
-function renderDayTabs(){
-  const row = document.getElementById('day-row');
-  row.innerHTML='';
-  plan.days.forEach(d=>{
-    const b = document.createElement('button');
-    b.className = 'day-btn' + (d.id===currentDay?' active':'');
-    b.textContent = d.label;
-    b.onclick = ()=>{ currentDay = d.id; renderDayTabs(); renderExercises(); };
+/* ---------- Perfil y plan ---------- */
+function renderProfileRow(){
+  var row=$('profile-row'); row.innerHTML='';
+  PROFILES.forEach(function(p){
+    var b=document.createElement('button');
+    b.className='profile-btn'+(p.id===activeProfileId?' active':'');
+    b.textContent=p.name;
+    b.onclick=function(){
+      if(p.id===activeProfileId) return;
+      activeProfileId=p.id; try{localStorage.setItem(ACTIVE_KEY,p.id);}catch(e){}
+      renderProfileRow(); loadProfileData();
+    };
     row.appendChild(b);
   });
 }
-
-function renderExercises(){
-  const day = plan.days.find(d=>d.id===currentDay);
-  const body = document.getElementById('ex-body');
-  if(!day){
-    document.getElementById('day-focus').textContent = '';
-    body.innerHTML = '<p class="empty">Este plan no tiene días todavía.</p>';
-    return;
+function renderPlanSelect(){
+  var list=PLANS[activeProfileId]||[];
+  $('plan-select').innerHTML=list.map(function(p){ return '<option value="'+p.id+'"'+(p.id===activePlanId?' selected':'')+'>'+esc(p.name)+'</option>'; }).join('');
+}
+function loadProfileData(){
+  var list=PLANS[activeProfileId]||[], chosen=null;
+  try{ chosen=localStorage.getItem(activePlanKey(activeProfileId)); }catch(e){}
+  var entry=list.filter(function(p){return p.id===chosen;})[0]||list[0];
+  if(!entry){ plan={label:'Sin plan',days:[]}; activePlanId=null; sessionLog=[]; }
+  else {
+    activePlanId=entry.id; plan=normalizePlan(JSON.parse(JSON.stringify(entry.plan)));
+    try{ var raw=localStorage.getItem(historyKey(activeProfileId,activePlanId)); sessionLog=raw?JSON.parse(raw):[]; }catch(e){ sessionLog=[]; }
   }
-  document.getElementById('day-focus').textContent = day.focus || '';
-  body.innerHTML='';
-  day.exercises.forEach(ex=>{
-    const prev = lastWeightFor(ex.id);
-    const startValue = prev != null ? prev : '';
-    const setBtns = Array.from({length: ex.sets||1}).map((_,i)=>
-      `<button type="button" class="set-btn" data-ex="${ex.id}" data-set="${i+1}">${i+1}</button>`
-    ).join('');
-    const card = document.createElement('div');
-    card.className = 'ex-card';
-    card.dataset.exCard = ex.id;
-    card.innerHTML = `
-      <button type="button" class="ex-card-head" data-toggle="${ex.id}">
-        <span class="ex-mini-icon">${PATTERN_ICONS[ex.pattern] || PATTERN_ICONS.isolation}</span>
-        <div class="ex-head-info">
-          <div class="ex-head-name">${ex.name}</div>
-          <div class="ex-head-sub">${ex.sets||'-'}×${ex.reps||'-'} · descanso ${ex.rest||60}s</div>
-        </div>
-        <div class="ex-check" data-check="${ex.id}"></div>
-        <div class="ex-chev">&#9662;</div>
-      </button>
-      <div class="ex-card-body">
-        <div class="ex-card-mid">
-          <div class="weight-stepper">
-            <button type="button" class="stepper-btn" data-ex="${ex.id}" data-delta="-2.5" aria-label="Restar 2,5 kg">&minus;</button>
-            <div class="weight-cell"><input type="number" inputmode="decimal" step="0.5" data-ex="${ex.id}" class="weight-input" value="${startValue}" placeholder="0"><span class="muted">kg</span></div>
-            <button type="button" class="stepper-btn" data-ex="${ex.id}" data-delta="2.5" aria-label="Sumar 2,5 kg">+</button>
-          </div>
-          <span class="ex-prev-inline">${prev ? 'Última vez: '+prev+' kg' : 'Sin datos previos'}</span>
-        </div>
-        <div class="ex-card-bottom">
-          <div class="set-checks" data-ex-group="${ex.id}">${setBtns}</div>
-          <button type="button" class="rest-btn" data-ex="${ex.id}" data-rest="${ex.rest||60}">&#9201; ${ex.rest||60}s</button>
-        </div>
-        <button type="button" class="ex-howto" data-ex="${ex.id}">Cómo hacerlo &#8599;</button>
-      </div>
-    `;
-    body.appendChild(card);
-    updateExerciseCheck(ex.id, ex.sets||1);
-  });
+  currentDay=suggestNextDayId();
+  renderPlanSelect(); renderDayTabs(); renderExercises(); renderHistory(); renderDayStatus(); renderPlanNotes();
+}
+$('plan-select').onchange=function(e){
+  try{ localStorage.setItem(activePlanKey(activeProfileId),e.target.value); }catch(err){}
+  loadProfileData();
+};
+function saveHistory(){ if(!activePlanId) return; try{ localStorage.setItem(historyKey(activeProfileId,activePlanId),JSON.stringify(sessionLog)); }catch(e){} }
+
+/* ---------- Día sugerido y estado ---------- */
+function suggestNextDayId(){
+  if(!plan.days.length) return null;
+  if(!sessionLog.length) return plan.days[0].id;
+  var last=sessionLog[sessionLog.length-1], i=-1;
+  plan.days.forEach(function(d,k){ if(d.id===last.dayId) i=k; });
+  return i<0 ? plan.days[0].id : plan.days[(i+1)%plan.days.length].id;
+}
+function renderDayStatus(){
+  var el=$('day-status');
+  if(!plan.days.length){ el.textContent=''; return; }
+  var last=sessionLog.length?sessionLog[sessionLog.length-1]:null;
+  var lastDay=last?plan.days.filter(function(d){return d.id===last.dayId;})[0]:null;
+  if(!last||!lastDay){ el.innerHTML='Hoy es <b>'+weekdayName(todayStr())+'</b>. Todavía no has entrenado con este plan: empieza por <b>'+esc(plan.days[0].label)+'</b>.'; return; }
+  el.innerHTML='Hoy es <b>'+weekdayName(todayStr())+'</b>. Última sesión: <b>'+esc(lastDay.label)+'</b>, hecha el '+weekdayName(last.date).toLowerCase()+' ('+last.date+').';
+}
+function renderPlanNotes(){
+  var html='<summary>Notas del plan</summary><p class="notes-title">'+esc(plan.label||'')+'</p>';
+  if(plan.goals&&plan.goals.length) html+='<h4>Objetivos</h4><ul>'+plan.goals.map(function(g){return '<li>'+esc(g)+'</li>';}).join('')+'</ul>';
+  if(plan.progression) html+='<h4>Cómo progresar</h4><p>'+esc(plan.progression)+'</p>';
+  if(plan.cardio) html+='<h4>Cardio</h4><p>'+esc(plan.cardio)+'</p>';
+  if(plan.safety) html+='<div class="safety-note"><h4>Seguridad</h4><p>'+esc(plan.safety)+'</p></div>';
+  $('plan-notes').innerHTML=html;
 }
 
-function updateExerciseCheck(exId, totalSets){
-  const setBtns = document.querySelectorAll(`.set-btn[data-ex="${exId}"]`);
-  const doneCount = Array.from(setBtns).filter(b=>b.classList.contains('done')).length;
-  const allDone = doneCount >= (totalSets||1);
-  const check = document.querySelector(`.ex-check[data-check="${exId}"]`);
-  const card = document.querySelector(`.ex-card[data-ex-card="${exId}"]`);
-  if(check){ check.classList.toggle('done', allDone); check.innerHTML = allDone ? '&#10003;' : ''; }
-  if(card){ card.classList.toggle('all-done', allDone); }
-}
-
-function adjustWeight(exId, delta){
-  const input = document.querySelector(`.weight-input[data-ex="${exId}"]`);
-  if(!input) return;
-  let current = parseFloat(input.value);
-  if(isNaN(current)) current = parseFloat(input.placeholder) || 0;
-  const next = Math.max(0, Math.round((current + delta) * 2) / 2);
-  input.value = Number.isInteger(next) ? next : next.toFixed(1);
-}
-
-function renderHistory(){
-  const list = document.getElementById('history-list');
-  if(history.length===0){
-    list.innerHTML = 'Todavía no has guardado ninguna sesión.';
-    return;
-  }
-  const last = history.slice(-6).reverse();
-  list.innerHTML = last.map(s=>{
-    const dayLabel = plan.days.find(d=>d.id===s.dayId)?.label || s.dayId;
-    const done = s.exercises.filter(e=>e.completed).length;
-    return `<div class="hist-row"><div><strong>${dayLabel}</strong> · ${s.date}</div><div class="muted">${done}/${s.exercises.length} ejercicios completados</div></div>`;
-  }).join('');
-}
-
-/* ---------- Temporizador de descanso (pantalla completa) ---------- */
-const TIMER_ARC_LEN = 603;
-let timerState = { interval:null, remaining:0, total:0, running:false };
-
-function playBeep(){
-  try{
-    const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.frequency.value = 880;
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.3);
-  }catch(e){}
-  try{ if(navigator.vibrate) navigator.vibrate([120,60,120]); }catch(e){}
-}
-
-function timerUpdateUI(){
-  document.getElementById('timer-count').textContent = timerState.remaining;
-  const frac = timerState.total ? timerState.remaining/timerState.total : 0;
-  document.getElementById('timer-arc').setAttribute('stroke-dashoffset', String(TIMER_ARC_LEN*(1-frac)));
-}
-
-function startRestTimer(seconds, label){
-  clearInterval(timerState.interval);
-  timerState = { interval:null, remaining:seconds, total:seconds, running:true };
-  document.getElementById('timer-label').textContent = label ? ('Descanso · '+label) : 'Descanso';
-  document.getElementById('timer-pause').textContent = 'Pausar';
-  timerUpdateUI();
-  document.getElementById('timer-overlay').classList.add('show');
-  timerState.interval = setInterval(()=>{
-    if(!timerState.running) return;
-    timerState.remaining--;
-    if(timerState.remaining <= 0){
-      clearInterval(timerState.interval);
-      document.getElementById('timer-overlay').classList.remove('show');
-      playBeep();
-      return;
-    }
-    timerUpdateUI();
-  }, 1000);
-}
-
-document.getElementById('timer-pause').onclick = ()=>{
-  timerState.running = !timerState.running;
-  document.getElementById('timer-pause').textContent = timerState.running ? 'Pausar' : 'Reanudar';
-};
-document.getElementById('timer-add15').onclick = ()=>{
-  timerState.remaining += 15; timerState.total += 15; timerUpdateUI();
-};
-document.getElementById('timer-skip').onclick = ()=>{
-  clearInterval(timerState.interval);
-  document.getElementById('timer-overlay').classList.remove('show');
-};
-
-document.getElementById('ex-body').addEventListener('click', (e)=>{
-  const toggleHead = e.target.closest('[data-toggle]');
-  if(toggleHead){
-    toggleHead.closest('.ex-card').classList.toggle('open');
-    return;
-  }
-  const howtoBtn = e.target.closest('.ex-howto');
-  if(howtoBtn){
-    openExerciseModal(howtoBtn.dataset.ex);
-    return;
-  }
-  const stepperBtn = e.target.closest('.stepper-btn');
-  if(stepperBtn){
-    adjustWeight(stepperBtn.dataset.ex, parseFloat(stepperBtn.dataset.delta));
-    return;
-  }
-  const setBtn = e.target.closest('.set-btn');
-  if(setBtn){
-    const exId = setBtn.dataset.ex;
-    const day = plan.days.find(d=>d.id===currentDay);
-    const ex = day && day.exercises.find(x=>x.id===exId);
-    const wasDone = setBtn.classList.contains('done');
-    setBtn.classList.toggle('done');
-    updateExerciseCheck(exId, (ex && ex.sets) || 1);
-    if(!wasDone && ex){ startRestTimer(ex.rest||60, ex.name); }
-    return;
-  }
-  const restBtn = e.target.closest('.rest-btn');
-  if(restBtn){
-    const exId = restBtn.dataset.ex;
-    const seconds = parseInt(restBtn.dataset.rest, 10) || 60;
-    const day = plan.days.find(d=>d.id===currentDay);
-    const ex = day && day.exercises.find(x=>x.id===exId);
-    startRestTimer(seconds, ex ? ex.name : '');
-  }
-});
-
-document.getElementById('save-session').onclick = async ()=>{
-  const day = plan.days.find(d=>d.id===currentDay);
-  if(!day) return;
-  const exercises = day.exercises.map(ex=>{
-    const wInput = document.querySelector(`.weight-input[data-ex="${ex.id}"]`);
-    const setBtns = document.querySelectorAll(`.set-btn[data-ex="${ex.id}"]`);
-    const setsDone = Array.from(setBtns).filter(b=>b.classList.contains('done')).length;
-    return {
-      id: ex.id,
-      name: ex.name,
-      weight: wInput && wInput.value ? parseFloat(wInput.value) : (lastWeightFor(ex.id) || null),
-      setsDone: setsDone,
-      setsTarget: ex.sets,
-      completed: setsDone >= (ex.sets||1)
-    };
-  });
-  history.push({ date: todayStr(), dayId: currentDay, exercises });
-  await saveHistory();
-  renderHistory();
-  renderExercises();
-  renderDayStatus();
-  const msg = document.getElementById('save-msg');
-  msg.textContent = 'Sesión guardada.';
-  setTimeout(()=>msg.textContent='', 2500);
-};
-
-function normalizePlan(obj){
-  const usedIds = new Set();
-  obj.days.forEach((day, di)=>{
-    if(!day.id) day.id = 'd' + di;
-    day.exercises.forEach((ex, ei)=>{
-      if(!ex.id || usedIds.has(ex.id)) ex.id = day.id + 'x' + ei;
-      usedIds.add(ex.id);
-      ex.sets = Number(ex.sets) || 1;
-      if(!PATTERN_VALUES.includes(ex.pattern)) ex.pattern = 'isolation';
-    });
-  });
-  return obj;
-}
-
-/* ---------- Resumen para Claude ---------- */
-async function generateSummary(){
-  const profileName = profiles.find(p=>p.id===activeProfileId).name;
-  let text = `Resumen de progreso — ${profileName} — ${todayStr()}\n\n`;
-  text += `Plan actual: ${plan.label || 'sin nombre'}\n\n`;
-  text += `ÚLTIMAS SESIONES (hasta ${Math.min(history.length,12)})\n`;
-  if(history.length===0){
-    text += 'Sin sesiones guardadas todavía.\n';
-  }else{
-    history.slice(-12).forEach(s=>{
-      const dayLabel = plan.days.find(d=>d.id===s.dayId)?.label || s.dayId;
-      const line = s.exercises.map(e=>`${e.name}: ${e.weight?e.weight+'kg':'s/d'} (${e.setsDone!=null?e.setsDone:'?'}/${e.setsTarget||'?'} series)`).join('; ');
-      text += `${s.date} [${dayLabel}] — ${line}\n`;
-    });
-  }
-  text += `\nPor favor revisa esto y ajusta mi tabla de entrenamiento según mis avances.`;
-  return text;
-}
-
-document.getElementById('gen-summary').onclick = async ()=>{
-  const box = document.getElementById('summary-box');
-  box.value = await generateSummary();
-};
-document.getElementById('copy-summary').onclick = async ()=>{
-  const box = document.getElementById('summary-box');
-  if(!box.value){ box.value = await generateSummary(); }
-  try{
-    await navigator.clipboard.writeText(box.value);
-    const m = document.getElementById('copy-summary-msg');
-    m.textContent = 'Copiado.';
-    m.className = 'msg ok';
-    setTimeout(()=>m.textContent='', 2000);
-  }catch(e){
-    box.select();
-  }
-};
-
-/* ---------- Copia de seguridad (historial de todos los perfiles) ---------- */
-document.getElementById('export-backup').onclick = ()=>{
-  const data = { app:'gym-studio', version:2, exportedAt:new Date().toISOString(), storage:{} };
-  for(let i=0;i<localStorage.length;i++){
-    const k = localStorage.key(i);
-    if(k && k.startsWith('gymstudio:')) data.storage[k] = localStorage.getItem(k);
-  }
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'gym-studio-backup-' + todayStr() + '.json';
-  a.click();
-  URL.revokeObjectURL(url);
-};
-
-document.getElementById('import-backup').addEventListener('change', async (e)=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  const msg = document.getElementById('backup-msg');
-  try{
-    const data = JSON.parse(await file.text());
-    if(data && data.app === 'gym-studio' && data.storage){
-      Object.keys(data.storage).forEach(k=>{
-        if(k.startsWith('gymstudio:')) localStorage.setItem(k, data.storage[k]);
-      });
-      loadProfiles();
-      renderProfileRow();
-      loadProfileData();
-      msg.textContent = 'Copia restaurada.';
-      msg.className = 'msg ok';
-    } else {
-      msg.textContent = 'Ese archivo no tiene el formato esperado.';
-      msg.className = 'msg err';
-    }
-  }catch(err){
-    msg.textContent = 'No se pudo leer ese archivo.';
-    msg.className = 'msg err';
-  }
-  setTimeout(()=>msg.textContent='', 3500);
-  e.target.value = '';
-});
-
-/* ---------- Pestañas principales ---------- */
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.onclick = ()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('view-'+btn.dataset.view).classList.add('active');
-  };
-});
-
-/* ---------- Iconos y guía técnica, por patrón de movimiento ---------- */
-const PATTERN_ICONS = {
-  press: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="80" cy="18" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="27" x2="80" y2="68" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="68" x2="65" y2="108" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="68" x2="95" y2="108" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="40" x2="58" y2="55" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="80" y1="40" x2="102" y2="55" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="80" y1="40" x2="55" y2="8" style="stroke:var(--brass);stroke-width:3"/><line x1="80" y1="40" x2="105" y2="8" style="stroke:var(--brass);stroke-width:3"/></svg>`,
-  pull: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="70" cy="30" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="70" y1="39" x2="90" y2="70" style="stroke:var(--text-mute);stroke-width:2"/><line x1="90" y1="70" x2="80" y2="108" style="stroke:var(--text-mute);stroke-width:2"/><line x1="90" y1="70" x2="105" y2="108" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="50" x2="130" y2="55" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="80" y1="50" x2="95" y2="65" style="stroke:var(--brass);stroke-width:3"/></svg>`,
-  squat: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="80" cy="18" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="27" x2="80" y2="72" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="80" y1="27" x2="80" y2="80" style="stroke:var(--brass);stroke-width:3"/><line x1="80" y1="80" x2="60" y2="98" style="stroke:var(--brass);stroke-width:3"/><line x1="60" y1="98" x2="65" y2="112" style="stroke:var(--brass);stroke-width:3"/><line x1="80" y1="80" x2="100" y2="98" style="stroke:var(--brass);stroke-width:3"/><line x1="100" y1="98" x2="95" y2="112" style="stroke:var(--brass);stroke-width:3"/></svg>`,
-  lunge: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="80" cy="18" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="27" x2="80" y2="70" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="70" x2="105" y2="90" style="stroke:var(--brass);stroke-width:3"/><line x1="105" y1="90" x2="105" y2="112" style="stroke:var(--brass);stroke-width:3"/><line x1="80" y1="70" x2="55" y2="85" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="55" y1="85" x2="40" y2="112" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/></svg>`,
-  hinge: `<svg viewBox="0 0 160 120" width="100%" height="110"><line x1="80" y1="88" x2="60" y2="112" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="88" x2="100" y2="112" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="88" x2="80" y2="40" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><circle cx="80" cy="30" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="80" y1="88" x2="120" y2="55" style="stroke:var(--brass);stroke-width:3"/><circle cx="128" cy="48" r="9" style="fill:none;stroke:var(--brass);stroke-width:3"/></svg>`,
-  bridge: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="30" cy="70" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="39" y1="70" x2="80" y2="90" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="39" y1="70" x2="80" y2="65" style="stroke:var(--brass);stroke-width:3"/><line x1="80" y1="65" x2="110" y2="90" style="stroke:var(--brass);stroke-width:3"/><line x1="110" y1="90" x2="110" y2="112" style="stroke:var(--brass);stroke-width:3"/></svg>`,
-  plank: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="30" cy="65" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="39" y1="65" x2="120" y2="65" style="stroke:var(--brass);stroke-width:3"/><line x1="120" y1="65" x2="130" y2="90" style="stroke:var(--brass);stroke-width:3"/><line x1="39" y1="65" x2="30" y2="90" style="stroke:var(--brass);stroke-width:3"/><line x1="20" y1="95" x2="140" y2="95" style="stroke:var(--text-mute);stroke-width:1;stroke-dasharray:2,4"/></svg>`,
-  isolation: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="80" cy="18" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="27" x2="80" y2="70" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="108" x2="65" y2="108" style="stroke:var(--text-mute);stroke-width:2"/><line x1="95" y1="108" x2="80" y2="108" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="40" x2="105" y2="70" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><path d="M105 70 Q108 40 90 25" style="fill:none;stroke:var(--brass);stroke-width:3"/></svg>`,
-  backext: `<svg viewBox="0 0 160 120" width="100%" height="110"><line x1="30" y1="80" x2="130" y2="80" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><circle cx="20" cy="80" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><path d="M20 65 Q75 40 140 55" style="fill:none;stroke:var(--brass);stroke-width:3"/><circle cx="16" cy="63" r="9" style="fill:none;stroke:var(--brass);stroke-width:3"/></svg>`,
-  legraise: `<svg viewBox="0 0 160 120" width="100%" height="110"><circle cx="20" cy="70" r="9" style="fill:none;stroke:var(--text-mute);stroke-width:2"/><line x1="29" y1="70" x2="80" y2="70" style="stroke:var(--text-mute);stroke-width:2"/><line x1="80" y1="70" x2="130" y2="70" style="stroke:var(--text-mute);stroke-width:2;stroke-dasharray:3,3"/><line x1="80" y1="70" x2="80" y2="20" style="stroke:var(--brass);stroke-width:3"/></svg>`
-};
-
-const PATTERN_INFO = {
-  press: {steps:['Coloca el peso a la altura del pecho u hombros, con el core activado.','Empuja hacia arriba o hacia delante hasta casi extender los brazos, sin bloquear los codos.','Baja controlando el peso hasta la posición inicial.'],mistakes:['Arquear demasiado la zona lumbar para ayudarte.','Dejar caer el peso de golpe al bajar.']},
-  pull: {steps:['Mantén la espalda recta y el core activado.','Tira llevando el peso hacia el cuerpo, iniciando el movimiento con la espalda, no solo con el brazo.','Junta los omóplatos en el punto final del recorrido.','Vuelve controlando la extensión.'],mistakes:['Encorvar la espalda para completar el movimiento.','Tirar solo con el brazo sin implicar la espalda.']},
-  squat: {steps:['Pies a la anchura de los hombros, pecho arriba.','Baja flexionando cadera y rodillas a la vez, como si te sentaras.','Mantén el peso repartido en todo el pie.','Empuja el suelo con los pies para volver a subir.'],mistakes:['Que las rodillas se metan hacia dentro.','Levantar los talones del suelo.']},
-  lunge: {steps:['Da un paso adelante (o atrás) manteniendo el tronco erguido.','Baja flexionando ambas rodillas hasta casi 90°.','Empuja con la pierna delantera para volver a la posición inicial.'],mistakes:['Que la rodilla delantera sobrepase mucho la punta del pie.','Dar un paso demasiado corto y perder el equilibrio.']},
-  hinge: {steps:['Rodillas ligeramente flexionadas, espalda recta.','Inclina el tronco hacia delante empujando la cadera hacia atrás, no hacia abajo.','Baja el peso cerca de las piernas manteniendo la espalda recta.','Vuelve empujando la cadera hacia delante.'],mistakes:['Redondear la espalda baja.','Convertirlo en una sentadilla flexionando demasiado las rodillas.']},
-  bridge: {steps:['Túmbate boca arriba con las rodillas flexionadas y los pies apoyados.','Eleva la cadera apretando los glúteos.','Baja controlando sin llegar a tocar el suelo del todo.'],mistakes:['Arquear la espalda baja en vez de usar los glúteos.','Hacerlo demasiado rápido sin controlar el descenso.']},
-  plank: {steps:['Apóyate sobre los antebrazos y las puntas de los pies (o las manos, según la variante).','Mantén el cuerpo en línea recta desde la cabeza hasta los talones.','Aprieta el core y los glúteos durante todo el tiempo.'],mistakes:['Dejar caer la cadera hacia el suelo.','Elevar demasiado los glúteos.']},
-  isolation: {steps:['Aísla la articulación implicada, evitando que el resto del cuerpo ayude con impulso.','Realiza el movimiento completo de forma controlada.','Baja controlando la fase excéntrica en vez de dejar caer el peso.'],mistakes:['Usar impulso balanceando el cuerpo.','Acortar el recorrido del movimiento.']},
-  backext: {steps:['Apoya la cadera en el punto de apoyo, piernas fijas.','Baja el tronco de forma controlada manteniendo la espalda neutra.','Sube extendiendo la espalda hasta alinearla con las piernas, sin hiperextender.'],mistakes:['Hiperextender la espalda en el punto más alto.','Hacer el movimiento con impulso en vez de control.']},
-  legraise: {steps:['Túmbate o cuélgate según la variante, con la zona lumbar apoyada o estable.','Eleva las piernas de forma controlada.','Baja sin que la zona lumbar se despegue o arquee en exceso.'],mistakes:['Bajar las piernas demasiado rápido perdiendo el control.','Arquear la zona lumbar durante el movimiento.']}
-};
-
-function findExercise(exId){
-  for(const day of plan.days){
-    const ex = day.exercises.find(e=>e.id===exId);
-    if(ex) return ex;
+/* ---------- Pestaña Plan ---------- */
+function lastWeightFor(exId){
+  for(var i=sessionLog.length-1;i>=0;i--){
+    var e=sessionLog[i].exercises.filter(function(x){return x.id===exId;})[0];
+    if(e&&e.weight!=null&&e.weight!=='') return e.weight;
   }
   return null;
 }
-
-function openExerciseModal(exId){
-  const ex = findExercise(exId);
-  if(!ex) return;
-  const info = PATTERN_INFO[ex.pattern] || {steps:['Todavía no hay una guía detallada para este tipo de ejercicio.'], mistakes:[]};
-  document.getElementById('modal-title').textContent = ex.name;
-  document.getElementById('modal-target').textContent = `${ex.sets}x${ex.reps} · descanso ${ex.rest||60}s`;
-  document.getElementById('modal-icon').innerHTML = PATTERN_ICONS[ex.pattern] || PATTERN_ICONS.isolation;
-  document.getElementById('modal-steps').innerHTML = info.steps.map(s=>`<li>${s}</li>`).join('');
-  document.getElementById('modal-mistakes').innerHTML = info.mistakes.map(s=>`<li>${s}</li>`).join('') || '<li>Sin datos todavía.</li>';
-  const sourceEl = document.getElementById('modal-source');
-  if(ex.source && ex.source.url){
-    sourceEl.innerHTML = `<a class="source-link" href="${ex.source.url}" target="_blank" rel="noopener"><span class="sl-label">Ver guía y vídeo &#8599;</span><span class="sl-sub">${ex.source.label||'Fuente verificada'}</span></a>`;
-  } else {
-    sourceEl.innerHTML = `<button type="button" class="btn btn-primary" id="modal-video" style="width:100%;">Buscar vídeo de referencia &#8599;</button>`;
-    document.getElementById('modal-video').onclick = ()=>{
-      window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(ex.name + ' técnica correcta'), '_blank');
-    };
+function renderDayTabs(){
+  var row=$('day-row'); row.innerHTML='';
+  plan.days.forEach(function(d){
+    var b=document.createElement('button');
+    b.className='day-btn'+(d.id===currentDay?' active':'');
+    b.textContent=d.label;
+    b.onclick=function(){ currentDay=d.id; renderDayTabs(); renderExercises(); };
+    row.appendChild(b);
+  });
+}
+function renderExercises(){
+  var day=plan.days.filter(function(d){return d.id===currentDay;})[0], body=$('ex-body');
+  if(!day){ $('day-focus').textContent=''; body.innerHTML='<p class="empty">Este plan no tiene días todavía.</p>'; return; }
+  $('day-focus').textContent=day.focus||'';
+  body.innerHTML='';
+  day.exercises.forEach(function(ex){
+    var cfg=LOADS[loadOf(ex)], prev=lastWeightFor(ex.id), sets='';
+    for(var i=1;i<=ex.sets;i++) sets+='<button type="button" class="set-btn" data-ex="'+ex.id+'" data-set="'+i+'">'+i+'</button>';
+    var weight = cfg
+      ? '<div class="ex-card-mid"><div class="weight-stepper"><button type="button" class="stepper-btn" data-ex="'+ex.id+'" data-delta="-'+cfg.step+'" aria-label="Restar">&minus;</button>'+
+        '<input type="number" inputmode="decimal" step="0.5" class="weight-input" data-ex="'+ex.id+'" value="'+(prev!=null?prev:'')+'" placeholder="0">'+
+        '<button type="button" class="stepper-btn" data-ex="'+ex.id+'" data-delta="'+cfg.step+'" aria-label="Sumar">+</button></div>'+
+        '<span class="unit">'+cfg.unit+'</span><span class="ex-prev-inline">'+(prev!=null?'Última vez: '+prev:'Sin datos previos')+'</span></div>'
+      : '<p class="bodyweight">Peso corporal: no hace falta registrar carga.</p>';
+    var card=document.createElement('div');
+    card.className='ex-card'; card.setAttribute('data-ex-card',ex.id);
+    card.innerHTML=
+      '<button type="button" class="ex-card-head" data-toggle="1"><div class="ex-head-info"><div class="ex-head-name">'+esc(ex.name)+'</div>'+
+      '<div class="ex-head-sub">'+ex.sets+'×'+esc(ex.reps)+' · descanso '+ex.rest+' s</div></div>'+
+      '<div class="ex-check" data-check="'+ex.id+'"></div><div class="ex-chev">&#9662;</div></button>'+
+      '<div class="ex-card-body"><button type="button" class="howto" data-ex="'+ex.id+'"><span class="howto-ic">&#9654;</span> Ver cómo se hace</button>'+weight+
+      '<div class="ex-card-bottom"><div class="set-checks">'+sets+'</div>'+
+      '<button type="button" class="rest-btn" data-ex="'+ex.id+'" data-rest="'+ex.rest+'">&#9201; '+ex.rest+' s</button></div></div>';
+    body.appendChild(card);
+  });
+}
+function updateExerciseCheck(exId,total){
+  var done=document.querySelectorAll('.set-btn.done[data-ex="'+exId+'"]').length, all=done>=(total||1);
+  var chk=document.querySelector('.ex-check[data-check="'+exId+'"]'), card=document.querySelector('.ex-card[data-ex-card="'+exId+'"]');
+  if(chk){ chk.classList.toggle('done',all); chk.innerHTML=all?'&#10003;':''; }
+  if(card) card.classList.toggle('all-done',all);
+}
+function adjustWeight(exId,delta){
+  var input=document.querySelector('.weight-input[data-ex="'+exId+'"]'); if(!input) return;
+  var cur=parseFloat(input.value); if(isNaN(cur)) cur=0;
+  var next=Math.max(0,Math.round((cur+delta)*2)/2);
+  input.value=(next%1===0)?next:next.toFixed(1);
+}
+function renderHistory(){
+  var list=$('history-list');
+  if(!sessionLog.length){ list.textContent='Todavía no has guardado ninguna sesión.'; return; }
+  list.innerHTML=sessionLog.slice(-6).reverse().map(function(s){
+    var d=plan.days.filter(function(x){return x.id===s.dayId;})[0], done=s.exercises.filter(function(e){return e.completed;}).length;
+    return '<div class="hist-row"><div><strong>'+esc(d?d.label:s.dayId)+'</strong> · '+s.date+'</div><div class="muted">'+done+'/'+s.exercises.length+' ejercicios completados</div></div>';
+  }).join('');
+}
+function exById(id){
+  for(var i=0;i<plan.days.length;i++){ var f=plan.days[i].exercises.filter(function(e){return e.id===id;})[0]; if(f) return f; }
+  return null;
+}
+$('ex-body').addEventListener('click',function(e){
+  var t=e.target;
+  var head=t.closest('[data-toggle]'); if(head){ head.closest('.ex-card').classList.toggle('open'); return; }
+  var how=t.closest('.howto'); if(how){ openTech(how.dataset.ex); return; }
+  var st=t.closest('.stepper-btn'); if(st){ adjustWeight(st.dataset.ex,parseFloat(st.dataset.delta)); return; }
+  var sb=t.closest('.set-btn');
+  if(sb){
+    var ex=exById(sb.dataset.ex), was=sb.classList.contains('done');
+    sb.classList.toggle('done'); updateExerciseCheck(sb.dataset.ex,ex&&ex.sets);
+    if(!was&&ex) startRestTimer(ex.rest,ex.name);
+    return;
   }
-  document.getElementById('modal-overlay').classList.add('open');
-}
-
-function closeExerciseModal(){
-  document.getElementById('modal-overlay').classList.remove('open');
-}
-document.getElementById('modal-close').onclick = closeExerciseModal;
-document.getElementById('modal-overlay').addEventListener('click', (e)=>{
-  if(e.target.id === 'modal-overlay') closeExerciseModal();
+  var rb=t.closest('.rest-btn');
+  if(rb){ var ex2=exById(rb.dataset.ex); startRestTimer(parseInt(rb.dataset.rest,10)||60,ex2?ex2.name:''); }
 });
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape') closeExerciseModal();
+$('save-session').onclick=function(){
+  var day=plan.days.filter(function(d){return d.id===currentDay;})[0]; if(!day) return;
+  var exs=day.exercises.map(function(ex){
+    var inp=document.querySelector('.weight-input[data-ex="'+ex.id+'"]');
+    var done=document.querySelectorAll('.set-btn.done[data-ex="'+ex.id+'"]').length;
+    var w=null; if(inp&&inp.value!=='') w=parseFloat(inp.value); else if(inp) w=lastWeightFor(ex.id);
+    return {id:ex.id,name:ex.name,weight:w,load:loadOf(ex),setsDone:done,setsTarget:ex.sets,completed:done>=ex.sets};
+  });
+  sessionLog.push({date:todayStr(),dayId:currentDay,exercises:exs});
+  saveHistory(); renderHistory(); renderExercises(); renderDayStatus();
+  var m=$('save-msg'); m.textContent='Sesión guardada.'; setTimeout(function(){m.textContent='';},2500);
+};
+
+/* ---------- Temporizador de descanso ---------- */
+var ARC=603, timer={iv:null,left:0,total:0,run:false};
+function beep(){
+  try{ var c=new (window.AudioContext||window.webkitAudioContext)(), o=c.createOscillator(), g=c.createGain();
+    o.frequency.value=880; o.connect(g); g.connect(c.destination); g.gain.setValueAtTime(0.2,c.currentTime); o.start(); o.stop(c.currentTime+0.3); }catch(e){}
+  try{ if(navigator.vibrate) navigator.vibrate([120,60,120]); }catch(e){}
+}
+function timerUI(){
+  $('timer-count').textContent=timer.left;
+  $('timer-arc').setAttribute('stroke-dashoffset',String(ARC*(1-(timer.total?timer.left/timer.total:0))));
+}
+function startRestTimer(sec,label){
+  clearInterval(timer.iv); timer={iv:null,left:sec,total:sec,run:true};
+  $('timer-label').textContent=label?('Descanso · '+label):'Descanso'; $('timer-pause').textContent='Pausar';
+  timerUI(); $('timer-overlay').classList.add('show');
+  timer.iv=setInterval(function(){
+    if(!timer.run) return;
+    timer.left--;
+    if(timer.left<=0){ clearInterval(timer.iv); $('timer-overlay').classList.remove('show'); beep(); return; }
+    timerUI();
+  },1000);
+}
+$('timer-pause').onclick=function(){ timer.run=!timer.run; $('timer-pause').textContent=timer.run?'Pausar':'Reanudar'; };
+$('timer-add15').onclick=function(){ timer.left+=15; timer.total+=15; timerUI(); };
+$('timer-skip').onclick=function(){ clearInterval(timer.iv); $('timer-overlay').classList.remove('show'); };
+
+/* ---------- Ventana de técnica con dibujo animado ---------- */
+var anim={raf:0,last:0,clock:0,playing:true,draw:null,techId:null};
+function ease(x){ return 0.5-0.5*Math.cos(Math.PI*x); }
+function frameT(){
+  var d=anim.draw, up=d.tempo?d.tempo[0]:1.2, down=d.tempo?d.tempo[1]:1.2, hold=0.9, tot=hold+up+hold+down, s=anim.clock%tot;
+  if(s<hold) return 0; if(s<hold+up) return ease((s-hold)/up);
+  if(s<hold+up+hold) return 1; return 1-ease((s-hold-up-hold)/down);
+}
+function paintFigure(){
+  var t=frameT(), first=t<0.5, tc=TECH[anim.techId];
+  $('m-svg').innerHTML='<rect width="420" height="300" fill="#2A2E31"/>'+GS.render(anim.draw,t);
+  $('m-cue').innerHTML='<b>'+(first?'1 · Inicio':'2 · Final')+'</b> '+esc(first?tc.start:tc.end);
+  $('m-b1').classList.toggle('on',first); $('m-b2').classList.toggle('on',!first);
+}
+function loop(now){
+  if(!anim.last) anim.last=now;
+  var dt=(now-anim.last)/1000; anim.last=now;
+  if(anim.playing) anim.clock+=Math.min(dt,0.1);
+  paintFigure(); anim.raf=requestAnimationFrame(loop);
+}
+function setPlaying(p){ anim.playing=p; $('m-play').innerHTML=p?'&#10073;&#10073; Pausar':'&#9654; Animar'; }
+function openTech(exId){
+  var ex=exById(exId); if(!ex) return;
+  var tc=TECH[ex.tech], d=DRAWS[ex.tech];
+  if(!tc||!d) return;
+  $('m-title').textContent=ex.name;
+  $('m-target').textContent=ex.sets+'×'+ex.reps+' · descanso '+ex.rest+' s';
+  anim.draw=d; anim.techId=ex.tech; anim.clock=0; anim.last=0;
+  setPlaying(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches));
+  $('m-equip').innerHTML='<b>Con tu material:</b> '+esc(tc.equip);
+  $('m-steps').innerHTML=tc.steps.map(function(s){return '<li>'+esc(s)+'</li>';}).join('');
+  $('m-mistakes').innerHTML=tc.mistakes.map(function(s){return '<li>'+esc(s)+'</li>';}).join('');
+  $('m-safety').innerHTML=tc.safety?'<p>'+esc(tc.safety)+'</p>':'';
+  $('m-safety').style.display=tc.safety?'block':'none';
+  $('m-links').innerHTML=tc.links.map(function(l){
+    return '<a class="source-link" href="'+l.u+'" target="_blank" rel="noopener"><span class="sl-label">'+esc(l.t)+' &#8599;</span><span class="sl-sub">'+esc(l.l)+'</span></a>';
+  }).join('');
+  $('modal-overlay').classList.add('open'); $('modal-box').scrollTop=0;
+  cancelAnimationFrame(anim.raf); anim.raf=requestAnimationFrame(loop);
+}
+function closeTech(){ cancelAnimationFrame(anim.raf); $('modal-overlay').classList.remove('open'); }
+$('m-b1').onclick=function(){ setPlaying(false); anim.clock=0; };
+$('m-b2').onclick=function(){ setPlaying(false); anim.clock=0.9+(anim.draw.tempo?anim.draw.tempo[0]:1.2)+0.01; };
+$('m-play').onclick=function(){ setPlaying(!anim.playing); };
+$('modal-close').onclick=closeTech;
+$('modal-overlay').addEventListener('click',function(e){ if(e.target.id==='modal-overlay') closeTech(); });
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeTech(); });
+
+/* ---------- Datos: resumen y copia de seguridad ---------- */
+function generateSummary(){
+  var name=PROFILES.filter(function(p){return p.id===activeProfileId;})[0].name;
+  var t='Resumen de progreso — '+name+' — '+todayStr()+'\n\nPlan actual: '+(plan.label||'sin nombre')+'\n\nÚLTIMAS SESIONES (hasta 12)\n';
+  if(!sessionLog.length) t+='Sin sesiones guardadas todavía.\n';
+  else sessionLog.slice(-12).forEach(function(s){
+    var d=plan.days.filter(function(x){return x.id===s.dayId;})[0];
+    t+=s.date+' ['+(d?d.label:s.dayId)+'] — '+s.exercises.map(function(e){
+      var cfg=LOADS[e.load||'kg'];
+      return e.name+': '+(e.weight!=null?e.weight+' '+(cfg?cfg.unit:''):'sin carga')+' ('+e.setsDone+'/'+e.setsTarget+' series)';
+    }).join('; ')+'\n';
+  });
+  return t+'\nPor favor revisa esto y ajusta mi plan según mis avances.';
+}
+$('gen-summary').onclick=function(){ $('summary-box').value=generateSummary(); };
+$('copy-summary').onclick=function(){
+  var box=$('summary-box'); if(!box.value) box.value=generateSummary();
+  var m=$('copy-summary-msg');
+  (navigator.clipboard?navigator.clipboard.writeText(box.value):Promise.reject()).then(function(){ m.textContent='Copiado.'; m.className='msg ok'; setTimeout(function(){m.textContent='';},2000); },function(){ box.select(); });
+};
+$('export-backup').onclick=function(){
+  var data={app:'gym-studio',version:2,exportedAt:new Date().toISOString(),storage:{}};
+  for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(k&&k.indexOf('gymstudio:')===0) data.storage[k]=localStorage.getItem(k); }
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download='gym-studio-backup-'+todayStr()+'.json'; a.click(); URL.revokeObjectURL(a.href);
+};
+$('import-backup').addEventListener('change',function(e){
+  var f=e.target.files[0]; if(!f) return; var m=$('backup-msg');
+  f.text().then(function(txt){
+    var d=JSON.parse(txt);
+    if(d&&d.app==='gym-studio'&&d.storage){
+      Object.keys(d.storage).forEach(function(k){ if(k.indexOf('gymstudio:')===0) localStorage.setItem(k,d.storage[k]); });
+      initProfile(); m.textContent='Copia restaurada.'; m.className='msg ok';
+    } else { m.textContent='Ese archivo no tiene el formato esperado.'; m.className='msg err'; }
+  }).catch(function(){ m.textContent='No se pudo leer ese archivo.'; m.className='msg err'; })
+  .then(function(){ setTimeout(function(){m.textContent='';},3500); e.target.value=''; });
 });
 
-/* ---------- Arranque ---------- */
-loadProfiles();
-renderProfileRow();
-loadProfileData();
+/* ---------- Pestañas, pantalla encendida y arranque ---------- */
+document.querySelectorAll('.tab-btn').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('.tab-btn').forEach(function(x){x.classList.remove('active');});
+    document.querySelectorAll('section').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active'); $('view-'+b.dataset.view).classList.add('active');
+  };
+});
+var wakeLock=null;
+function keepAwake(){ try{ if('wakeLock' in navigator) navigator.wakeLock.request('screen').then(function(l){wakeLock=l;},function(){}); }catch(e){} }
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') keepAwake(); });
+document.addEventListener('click',function once(){ keepAwake(); document.removeEventListener('click',once); });
+keepAwake();
+
+function initProfile(){
+  try{ activeProfileId=localStorage.getItem(ACTIVE_KEY); }catch(e){}
+  if(!PROFILES.some(function(p){return p.id===activeProfileId;})) activeProfileId=PROFILES[0].id;
+  renderProfileRow(); loadProfileData();
+}
+initProfile();
+
 </script>
 </body>
 </html>
